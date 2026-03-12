@@ -14,38 +14,40 @@ button { padding:10px 20px; background:#00c853; border:none; color:white; border
 
 <h1>CheddaCoin Shop</h1>
 
-<div class="shop">
-  <div class="item">
-    <img src="images/ak47.jpg" alt="AK47">
-    <h3>AK47</h3>
-    <p>25 Coins</p>
-    <button onclick="copyCommand('!ak47')">Copy Command</button>
-  </div>
-
-  <div class="item">
-    <img src="images/airhorn.png" alt="Airhorn">
-    <h3>Airhorn</h3>
-    <p>10 Coins</p>
-    <button onclick="copyCommand('!airhorn')">Copy Command</button>
-  </div>
-
-  <div class="item">
-    <img src="images/bruh.png" alt="Bruh">
-    <h3>Bruh</h3>
-    <p>15 Coins</p>
-    <button onclick="copyCommand('!bruh')">Copy Command</button>
-  </div>
-
-  <!-- Add more items as needed -->
-</div>
+<div class="shop" id="shop-container"></div>
 
 <script>
-function copyCommand(cmd){
-  navigator.clipboard.writeText(cmd).then(() => {
-    alert(`Command "${cmd}" copied! Paste it into Twitch chat to redeem.`);
-  });
-}
+    // 1. THIS IS YOUR LIST. Just add new items here!
+    const soundEffects = [
+        { name: "AK47", price: 25, img: "ak47.jpg", command: "!ak47" },
+        { name: "Airhorn", price: 10, img: "airhorn.png", command: "!airhorn" },
+        { name: "Bruh", price: 15, img: "bruh.png", command: "!bruh" },
+        { name: "Fart", price: 5, img: "fart.png", command: "!fart" },
+        // To add more, just copy the line above, paste it below, and change the info.
+    ];
+
+    // 2. THE COMPUTER ROBOT (The Loop)
+    const container = document.getElementById('shop-container');
+
+    soundEffects.forEach(effect => {
+        // This "template" creates the HTML for you automatically
+        const itemHtml = `
+            <div class="item">
+                <img src="images/${effect.img}" alt="${effect.name}">
+                <h3>${effect.name}</h3>
+                <p>${effect.price} Coins</p>
+                <button onclick="copyCommand('${effect.command}')">Copy Command</button>
+            </div>
+        `;
+        container.innerHTML += itemHtml;
+    });
+
+    // 3. YOUR ORIGINAL COPY FUNCTION
+    function copyCommand(cmd) {
+        navigator.clipboard.writeText(cmd).then(() => {
+            alert("Command " + cmd + " copied! Paste it into Twitch chat.");
+        });
+    }
 </script>
 
 </body>
-</html>
