@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CheddaCoin Shop</title>
+<style>
+body { background:#111; color:white; font-family:Arial; text-align:center; }
+.shop { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; padding:40px; }
+.item { background:#1e1e1e; padding:20px; border-radius:10px; }
+.item img { width:100%; height:auto; border-radius:6px; }
+button { padding:10px 20px; background:#00c853; border:none; color:white; border-radius:6px; cursor:pointer; margin-top:10px; }
+</style>
+</head>
+<body>
+
+<h1>CheddaCoin Shop</h1>
+
+<div class="shop">
+  <div class="item">
+    <img src="images/ak47.jpg" alt="AK47">
+    <h3>AK47</h3>
+    <p>25 Coins</p>
+    <button onclick="copyCommand('!ak47')">Copy Command</button>
+  </div>
+
+  <div class="item">
+    <img src="images/airhorn.png" alt="Airhorn">
+    <h3>Airhorn</h3>
+    <p>10 Coins</p>
+    <button onclick="copyCommand('!airhorn')">Copy Command</button>
+  </div>
+
+  <div class="item">
+    <img src="images/bruh.png" alt="Bruh">
+    <h3>Bruh</h3>
+    <p>15 Coins</p>
+    <button onclick="copyCommand('!bruh')">Copy Command</button>
+  </div>
+
+  <!-- Add more items as needed -->
+</div>
+
+<script>
+function copyCommand(cmd){
+  navigator.clipboard.writeText(cmd).then(() => {
+    alert(`Command "${cmd}" copied! Paste it into Twitch chat to redeem.`);
+  });
+}
+</script>
+
+</body>
+</html>
