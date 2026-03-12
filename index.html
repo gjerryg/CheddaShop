@@ -4,91 +4,145 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     
     <style>
-        /* This tells the whole page to use the Bungee font */
         body {
             font-family: 'Bungee', cursive;
-            background-color: #1a1a1a; /* Making it dark so the colors pop */
+            background-color: #1a1a1a;
             color: white;
             text-align: center;
+            padding: 20px;
         }
 
-        /* Styling the specific colors for your title */
-        .chedda { color: #0bd2f4; } /* Blue */
-        .coin { color: #ed7612; }   /* Orange */
+        /* This fixes your title colors */
+        .chedda { color: #0bd2f4; }
+        .coin { color: #ed7612; }
 
         /* Search Bar Styling */
         #searchBar {
             padding: 15px;
-            width: 300px;
+            width: 80%;
+            max-width: 400px;
             font-family: 'Bungee', cursive;
             font-size: 18px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             border-radius: 10px;
-            border: none;
+            border: 3px solid #333;
+            background: #222;
+            color: white;
         }
 
-        /* Shop Grid Layout */
         .shop {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .item {
-            background: #333;
-            padding: 15px;
-            border-radius: 15px;
-            width: 200px;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 20px;
+            width: 220px;
+            border: 2px solid #333;
+            transition: transform 0.2s; /* Makes it pop when you hover */
+        }
+
+        .item:hover {
+            transform: scale(1.05);
+            border-color: #0bd2f4;
         }
 
         .item img {
             width: 100%;
+            height: 150px;
+            object-fit: cover; /* Keeps images from looking stretched */
             border-radius: 10px;
+            background: #000;
+        }
+
+        /* STYLISH BUTTONS */
+        button {
+            font-family: 'Bungee', cursive;
+            background-color: #ed7612;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            box-shadow: 0 4px #8a450b; /* Gives it a 3D look */
+            transition: 0.1s;
+        }
+
+        button:active {
+            box-shadow: 0 0px #8a450b; /* Makes button "sink" when clicked */
+            transform: translateY(4px);
+        }
+
+        button:hover {
+            background-color: #ff8c2e;
         }
     </style>
 </head>
 <body>
 
-<h1>CheddaCoin Shop</h1>
+    <h1><span class="chedda">Chedda</span><span class="coin">Coin</span> Shop</h1>
 
-<div class="shop" id="shop-container"></div>
+    <input type="text" id="searchBar" placeholder="Search for sounds..." onkeyup="filterShop()">
+
+    <div class="shop" id="shop-container"></div>
 
 <script>
-    // 1. THIS IS YOUR LIST. Just add new items here!
+    // YOUR LIST
     const soundEffects = [
         { name: "AK47", price: 25, img: "ak47.jpg", command: "!ak47" },
         { name: "Airhorn", price: 10, img: "airhorn.png", command: "!airhorn" },
         { name: "Bruh", price: 15, img: "bruh.png", command: "!bruh" },
         { name: "Fart", price: 5, img: "fart.png", command: "!fart" },
-        { name: "Cum", price: 5, img: "cum.png", command: "!cum" },
-        // To add more, just copy the line above, paste it below, and change the info.
+        { name: "Cum", price: 5, img: "cum.png", command: "!cum" }
     ];
 
-    // 2. THE COMPUTER ROBOT (The Loop)
     const container = document.getElementById('shop-container');
 
-    soundEffects.forEach(effect => {
-        // This "template" creates the HTML for you automatically
-        const itemHtml = `
-            <div class="item">
-                <img src="images/${effect.img}" alt="${effect.name}">
-                <h3>${effect.name}</h3>
-                <p>${effect.price} Coins</p>
-                <button onclick="copyCommand('${effect.command}')">Copy Command</button>
-            </div>
-        `;
-        container.innerHTML += itemHtml;
-    });
-
-    // 3. YOUR ORIGINAL COPY FUNCTION
-    function copyCommand(cmd) {
-        navigator.clipboard.writeText(cmd).then(() => {
-            alert("Command " + cmd + " copied! Paste it into Twitch chat.");
+    // Function to draw the shop
+    function displayShop(items) {
+        container.innerHTML = ""; 
+        items.forEach(effect => {
+            container.innerHTML += `
+                <div class="item">
+                    <img src="images/${effect.img}" alt="${effect.name}">
+                    <h3>${effect.name}</h3>
+                    <p>${effect.price} Coins</p>
+                    <button onclick="copyCommand('${effect.command}')">Copy Command</button>
+                </div>
+            `;
         });
     }
+
+    // Function for Search
+    function filterShop() {
+        const searchText = document.getElementById('searchBar').value.toLowerCase();
+        const filteredItems = soundEffects.filter(item => 
+            item.name.toLowerCase().includes(searchText)
+        );
+        displayShop(filteredItems);
+    }
+
+    // Copy Function
+    function copyCommand(cmd) {
+        navigator.clipboard.writeText(cmd).then(() => {
+            // This is a subtle way to show it worked without a pop-up
+            console.log("Copied " + cmd);
+        });
+        // Optional: change button text temporarily
+        event.target.innerText = "COPIED!";
+        const btn = event.target;
+        setTimeout(() => { btn.innerText = "COPY COMMAND"; }, 1000);
+    }
+
+    // Load the shop initially
+    displayShop(soundEffects);
 </script>
 
 </body>
-
-
+</html>
