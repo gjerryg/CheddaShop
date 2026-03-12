@@ -1,14 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CheddaCoin Shop</title>
-<style>
-body { background:#111; color:white; font-family:Arial; text-align:center; }
-.shop { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; padding:40px; }
-.item { background:#1e1e1e; padding:20px; border-radius:10px; }
-.item img { width:100%; height:auto; border-radius:6px; }
-button { padding:10px 20px; background:#00c853; border:none; color:white; border-radius:6px; cursor:pointer; margin-top:10px; }
-</style>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    
+    <style>
+        /* This tells the whole page to use the Bungee font */
+        body {
+            font-family: 'Bungee', cursive;
+            background-color: #1a1a1a; /* Making it dark so the colors pop */
+            color: white;
+            text-align: center;
+        }
+
+        /* Styling the specific colors for your title */
+        .chedda { color: #0bd2f4; } /* Blue */
+        .coin { color: #ed7612; }   /* Orange */
+
+        /* Search Bar Styling */
+        #searchBar {
+            padding: 15px;
+            width: 300px;
+            font-family: 'Bungee', cursive;
+            font-size: 18px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        /* Shop Grid Layout */
+        .shop {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .item {
+            background: #333;
+            padding: 15px;
+            border-radius: 15px;
+            width: 200px;
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -52,4 +90,5 @@ button { padding:10px 20px; background:#00c853; border:none; color:white; border
 </script>
 
 </body>
+
 
