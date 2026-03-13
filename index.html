@@ -68,7 +68,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
+            position: relative; /* Keeps the star locked to the card */
         }
 
         .item:hover {
@@ -76,24 +76,35 @@
             border-color: #0bd2f4;
         }
 
-        /* FAVORITE STAR BUTTON */
+        /* NEW STAR STYLING & PLACEMENT */
         .fav-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 155px; /* Positioned right at the bottom edge of the 150px image */
+            right: 25px; /* Tucked into the right side */
             background: none;
             border: none;
-            color: #555;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
             width: auto;
             box-shadow: none;
             padding: 0;
+            z-index: 10;
+            
+            /* The "Empty" look: transparent fill with a gold border */
+            color: transparent;
+            -webkit-text-stroke: 2px #ffcf40; 
+            transition: transform 0.1s ease;
         }
 
+        /* The "Filled" look when favorited */
         .fav-btn.is-fav {
             color: #ffcf40;
+            -webkit-text-stroke: 0px;
             text-shadow: 0 0 10px rgba(255, 207, 64, 0.5);
+        }
+
+        .fav-btn:hover {
+            transform: scale(1.2);
         }
 
         .item img {
@@ -164,10 +175,9 @@
         <button id="favToggle" onclick="toggleFavFilter()">Show Favorites ⭐</button>
     </div>
 
-    <div class="shop" id="shop-container"></div>
+    <div id="shop-container" class="shop"></div>
 
 <script>
-   // Your full array here - kept same as before
    const soundEffects = [
     { name: "18 Beers", price: 5, img: "18.png", command: "!18" },
     { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna" },
@@ -310,20 +320,16 @@
 
     const container = document.getElementById('shop-container');
     let showFavoritesOnly = false;
-
-    // Load favorites from LocalStorage or start empty
     let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
 
     function displayShop(items) {
         container.innerHTML = ""; 
-        
-        // Filter out if Toggle is active
         const displayList = showFavoritesOnly 
             ? items.filter(i => favorites.includes(i.command)) 
             : items;
 
         if (displayList.length === 0 && showFavoritesOnly) {
-            container.innerHTML = "<p style='width:100%'>You haven't favorited any redeems yet!</p>";
+            container.innerHTML = "<p style='width:100%; color:#888;'>No favorites yet! Go click some stars.</p>";
             return;
         }
 
@@ -331,8 +337,8 @@
             const isFav = favorites.includes(effect.command) ? "is-fav" : "";
             container.innerHTML += `
                 <div class="item">
-                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">⭐</button>
                     <img src="images/${effect.img}" alt="${effect.name}">
+                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
                     <h3>${effect.name}</h3>
                     <div class="command-hint">${effect.command}</div>
                     <p class="price-tag">${effect.price} Coins</p>
