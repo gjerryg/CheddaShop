@@ -15,17 +15,40 @@
         .chedda { color: #0bd2f4; }
         .coin { color: #ed7612; }
 
+        .controls {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
         #searchBar {
             padding: 15px;
             width: 80%;
             max-width: 400px;
             font-family: 'Bungee', cursive;
             font-size: 18px;
-            margin-bottom: 40px;
             border-radius: 10px;
             border: 3px solid #333;
             background: #222;
             color: white;
+        }
+
+        #favToggle {
+            background-color: #444;
+            color: #ffcf40;
+            border: 2px solid #ffcf40;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Bungee', cursive;
+            transition: 0.2s;
+        }
+
+        #favToggle.active {
+            background-color: #ffcf40;
+            color: #000;
         }
 
         .shop {
@@ -45,11 +68,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
 
         .item:hover {
             transform: scale(1.05);
             border-color: #0bd2f4;
+        }
+
+        /* FAVORITE STAR BUTTON */
+        .fav-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #555;
+            font-size: 24px;
+            cursor: pointer;
+            width: auto;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .fav-btn.is-fav {
+            color: #ffcf40;
+            text-shadow: 0 0 10px rgba(255, 207, 64, 0.5);
         }
 
         .item img {
@@ -70,7 +114,6 @@
             text-shadow: 2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
         }
 
-        /* STYLING FOR THE VISIBLE COMMAND */
         .command-hint {
             color: #0bd2f4;
             font-size: 14px;
@@ -88,7 +131,7 @@
             letter-spacing: 1px;
         }
 
-        button {
+        .copy-btn {
             font-family: 'Bungee', cursive;
             background-color: #ed7612;
             color: white;
@@ -102,12 +145,12 @@
             transition: 0.1s;
         }
 
-        button:active {
+        .copy-btn:active {
             box-shadow: 0 0px #8a450b;
             transform: translateY(4px);
         }
 
-        button:hover {
+        .copy-btn:hover {
             background-color: #ff8c2e;
         }
     </style>
@@ -116,11 +159,15 @@
 
     <h1><span class="chedda">Chedda</span><span class="coin">Coin</span> Shop</h1>
 
-    <input type="text" id="searchBar" placeholder="Search for redeem..." onkeyup="filterShop()">
+    <div class="controls">
+        <input type="text" id="searchBar" placeholder="Search for redeem..." onkeyup="filterShop()">
+        <button id="favToggle" onclick="toggleFavFilter()">Show Favorites ⭐</button>
+    </div>
 
     <div class="shop" id="shop-container"></div>
 
 <script>
+   // Your full array here - kept same as before
    const soundEffects = [
     { name: "18 Beers", price: 5, img: "18.png", command: "!18" },
     { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna" },
@@ -198,8 +245,6 @@
     { name: "WET WET WET", price: 10, img: "wet.png", command: "!wetwetwet" },
     { name: "WTF GRENADE", price: 5, img: "grenade.png", command: "!grenade" },
     { name: "Yung Walnut", price: 5, img: "yungwalnut.png", command: "!yungwalnut" },
-    
-    // --- GROUPED BY IMAGE ---
     { name: "Bas Rutten 01", price: 5, img: "basrutten.png", command: "!basrutten01" },
     { name: "Bas Rutten 02", price: 5, img: "basrutten.png", command: "!basrutten02" },
     { name: "Bas Rutten 03", price: 5, img: "basrutten.png", command: "!basrutten03" },
@@ -261,23 +306,58 @@
     { name: "Phone Bone", price: 10, img: "ventrilo.png", command: "!maldaven" },
     { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt" },
     { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt" }
-];
+   ];
 
     const container = document.getElementById('shop-container');
+    let showFavoritesOnly = false;
+
+    // Load favorites from LocalStorage or start empty
+    let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
 
     function displayShop(items) {
         container.innerHTML = ""; 
-        items.forEach(effect => {
+        
+        // Filter out if Toggle is active
+        const displayList = showFavoritesOnly 
+            ? items.filter(i => favorites.includes(i.command)) 
+            : items;
+
+        if (displayList.length === 0 && showFavoritesOnly) {
+            container.innerHTML = "<p style='width:100%'>You haven't favorited any redeems yet!</p>";
+            return;
+        }
+
+        displayList.forEach(effect => {
+            const isFav = favorites.includes(effect.command) ? "is-fav" : "";
             container.innerHTML += `
                 <div class="item">
+                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">⭐</button>
                     <img src="images/${effect.img}" alt="${effect.name}">
                     <h3>${effect.name}</h3>
                     <div class="command-hint">${effect.command}</div>
                     <p class="price-tag">${effect.price} Coins</p>
-                    <button onclick="copyCommand(this, '${effect.command}')">Copy Command</button>
+                    <button class="copy-btn" onclick="copyCommand(this, '${effect.command}')">Copy Command</button>
                 </div>
             `;
         });
+    }
+
+    function toggleFavorite(cmd) {
+        if (favorites.includes(cmd)) {
+            favorites = favorites.filter(f => f !== cmd);
+        } else {
+            favorites.push(cmd);
+        }
+        localStorage.setItem('cheddaFavs', JSON.stringify(favorites));
+        displayShop(soundEffects);
+    }
+
+    function toggleFavFilter() {
+        showFavoritesOnly = !showFavoritesOnly;
+        const btn = document.getElementById('favToggle');
+        btn.classList.toggle('active');
+        btn.innerText = showFavoritesOnly ? "Showing Favorites" : "Show Favorites ⭐";
+        displayShop(soundEffects);
     }
 
     function filterShop() {
@@ -290,20 +370,13 @@
     }
 
     function copyCommand(btn, cmd) {
-        navigator.clipboard.writeText(cmd).then(() => {
-            console.log("Copied " + cmd);
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-        });
-
-        // Visual Feedback on button
+        navigator.clipboard.writeText(cmd);
         const originalText = "COPY COMMAND";
         btn.innerText = "COPIED!";
-        btn.style.backgroundColor = "#28a745"; // Success green
-
+        btn.style.backgroundColor = "#28a745";
         setTimeout(() => { 
             btn.innerText = originalText; 
-            btn.style.backgroundColor = "#ed7612"; // Back to orange
+            btn.style.backgroundColor = "#ed7612"; 
         }, 1200);
     }
 
