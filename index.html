@@ -4,51 +4,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     
     <style>
+        /* STICKY HEADER STYLING */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(26, 26, 26, 0.9); /* Transparent dark background */
+            backdrop-filter: blur(10px); /* Blurs content behind it */
+            padding: 20px 10px;
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+
         body {
             font-family: 'Bungee', cursive;
             background-color: #1a1a1a;
             color: white;
             text-align: center;
-            padding: 25px;
+            padding: 0; /* Changed to 0 so header hits the top */
+            margin: 0;
         }
 
         .chedda { color: #0bd2f4; }
         .coin { color: #ed7612; }
 
         .controls {
-            margin-bottom: 40px;
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
             gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         #searchBar {
-            padding: 15px;
-            width: 80%;
-            max-width: 400px;
+            padding: 12px;
+            width: 250px;
             font-family: 'Bungee', cursive;
-            font-size: 18px;
+            font-size: 16px;
             border-radius: 10px;
-            border: 3px solid #333;
+            border: 2px solid #333;
             background: #222;
             color: white;
         }
 
-        #favToggle {
+        .control-btn, #sortSelect {
             background-color: #444;
-            color: #ffcf40;
-            border: 2px solid #ffcf40;
-            padding: 10px 20px;
+            color: white;
+            border: 2px solid #555;
+            padding: 10px 15px;
             cursor: pointer;
             border-radius: 8px;
             font-family: 'Bungee', cursive;
+            font-size: 14px;
             transition: 0.2s;
         }
 
         #favToggle.active {
             background-color: #ffcf40;
             color: #000;
+            border-color: #ffcf40;
+        }
+
+        #sortSelect {
+            color: #0bd2f4;
+            border-color: #0bd2f4;
+            outline: none;
         }
 
         .shop {
@@ -56,11 +78,11 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 25px;
+            padding: 20px;
         }
 
         .item {
             background: #2a2a2a;
-            /* ADDED TOP PADDING to make room for the star and push the image down */
             padding: 50px 20px 20px 20px; 
             border-radius: 20px;
             width: 220px;
@@ -69,7 +91,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative; /* Keeps the star locked to the card */
+            position: relative;
         }
 
         .item:hover {
@@ -77,37 +99,24 @@
             border-color: #0bd2f4;
         }
 
-        /* UPDATED STAR STYLING & PLACEMENT (Centered at the top) */
         .fav-btn {
             position: absolute;
-            top: 15px; /* Positioned near the top edge */
-            left: 50%; /* Start at the horizontal center */
-            transform: translateX(-50%); /* Pull back by half its width to perfectly center */
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
             background: none;
             border: none;
             font-size: 26px;
             cursor: pointer;
             width: auto;
-            box-shadow: none;
-            padding: 0;
-            z-index: 10;
-            
-            /* The "Empty" look: transparent fill with a gold border */
             color: transparent;
             -webkit-text-stroke: 2px #ffcf40; 
-            transition: transform 0.1s ease, color 0.1s ease, -webkit-text-stroke 0.1s ease;
+            transition: transform 0.1s ease;
         }
 
-        /* The "Filled" look when favorited */
         .fav-btn.is-fav {
             color: #ffcf40;
             -webkit-text-stroke: 0px;
-            text-shadow: 0 0 10px rgba(255, 207, 64, 0.5);
-        }
-
-        .fav-btn:hover {
-            /* Keep centered on hover scale */
-            transform: translateX(-50%) scale(1.2); 
         }
 
         .item img {
@@ -118,16 +127,13 @@
             background: #000;
             margin-bottom: 15px;
             border: 1px solid #444;
-            /* Ensure the image is pushed down by the padding */
-            margin-top: 0; 
         }
 
         .item h3 {
             font-size: 18px;
             margin: 10px 0 5px 0;
-            letter-spacing: 1.5px;
             color: #ffffff;
-            text-shadow: 2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
+            text-shadow: 1px 1px 0px #000;
         }
 
         .command-hint {
@@ -137,14 +143,6 @@
             padding: 4px 10px;
             border-radius: 5px;
             margin-bottom: 10px;
-            border: 1px dashed #444;
-        }
-
-        .item p.price-tag {
-            font-size: 14px;
-            color: #bbb;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
         }
 
         .copy-btn {
@@ -156,31 +154,29 @@
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-size: 14px;
             box-shadow: 0 4px #8a450b;
-            transition: 0.1s;
-        }
-
-        .copy-btn:active {
-            box-shadow: 0 0px #8a450b;
-            transform: translateY(4px);
-        }
-
-        .copy-btn:hover {
-            background-color: #ff8c2e;
         }
     </style>
 </head>
 <body>
 
-    <h1><span class="chedda">Chedda</span><span class="coin">Coin</span> Shop</h1>
-
+<header>
     <div class="controls">
-        <input type="text" id="searchBar" placeholder="Search for redeem..." onkeyup="filterShop()">
-        <button id="favToggle" onclick="toggleFavFilter()">Show Favorites ⭐</button>
+        <input type="text" id="searchBar" placeholder="Search..." onkeyup="processShop()">
+        
+        <button id="favToggle" class="control-btn" onclick="toggleFavFilter()">Favorites ⭐</button>
+        
+        <select id="sortSelect" onchange="processShop()">
+            <option value="az">A-Z Sort</option>
+            <option value="low">Price: Low-High</option>
+            <option value="high">Price: High-Low</option>
+        </select>
     </div>
+</header>
 
-    <div id="shop-container" class="shop"></div>
+<h1><span class="chedda">Chedda</span><span class="coin">Coin</span> Shop</h1>
+
+<div id="shop-container" class="shop"></div>
 
 <script>
    const soundEffects = [
@@ -323,22 +319,38 @@
     { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt" }
    ];
 
-    const container = document.getElementById('shop-container');
     let showFavoritesOnly = false;
     let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
 
-    function displayShop(items) {
-        container.innerHTML = ""; 
-        const displayList = showFavoritesOnly 
-            ? items.filter(i => favorites.includes(i.command)) 
-            : items;
+    // MAIN BRAIN: Processes Filtering, Searching, and Sorting all at once
+    function processShop() {
+        const searchText = document.getElementById('searchBar').value.toLowerCase();
+        const sortType = document.getElementById('sortSelect').value;
+        const container = document.getElementById('shop-container');
 
-        if (displayList.length === 0 && showFavoritesOnly) {
-            container.innerHTML = "<p style='width:100%; color:#888;'>No favorites yet! Go click some stars.</p>";
+        // 1. FILTERING (Search + Favorites)
+        let items = soundEffects.filter(item => {
+            const matchesSearch = item.name.toLowerCase().includes(searchText) || 
+                                 item.command.toLowerCase().includes(searchText);
+            const matchesFav = showFavoritesOnly ? favorites.includes(item.command) : true;
+            return matchesSearch && matchesFav;
+        });
+
+        // 2. SORTING
+        items.sort((a, b) => {
+            if (sortType === "az") return a.name.localeCompare(b.name);
+            if (sortType === "low") return a.price - b.price;
+            if (sortType === "high") return b.price - a.price;
+        });
+
+        // 3. DISPLAY
+        container.innerHTML = "";
+        if (items.length === 0) {
+            container.innerHTML = "<p style='color:#888; margin-top:50px;'>Nothing found!</p>";
             return;
         }
 
-        displayList.forEach(effect => {
+        items.forEach(effect => {
             const isFav = favorites.includes(effect.command) ? "is-fav" : "";
             container.innerHTML += `
                 <div class="item">
@@ -346,7 +358,7 @@
                     <img src="images/${effect.img}" alt="${effect.name}">
                     <h3>${effect.name}</h3>
                     <div class="command-hint">${effect.command}</div>
-                    <p class="price-tag">${effect.price} Coins</p>
+                    <p>${effect.price} Coins</p>
                     <button class="copy-btn" onclick="copyCommand(this, '${effect.command}')">Copy Command</button>
                 </div>
             `;
@@ -360,24 +372,13 @@
             favorites.push(cmd);
         }
         localStorage.setItem('cheddaFavs', JSON.stringify(favorites));
-        displayShop(soundEffects);
+        processShop(); // Refresh view
     }
 
     function toggleFavFilter() {
         showFavoritesOnly = !showFavoritesOnly;
-        const btn = document.getElementById('favToggle');
-        btn.classList.toggle('active');
-        btn.innerText = showFavoritesOnly ? "Showing Favorites" : "Show Favorites ⭐";
-        displayShop(soundEffects);
-    }
-
-    function filterShop() {
-        const searchText = document.getElementById('searchBar').value.toLowerCase();
-        const filteredItems = soundEffects.filter(item => 
-            item.name.toLowerCase().includes(searchText) || 
-            item.command.toLowerCase().includes(searchText)
-        );
-        displayShop(filteredItems);
+        document.getElementById('favToggle').classList.toggle('active');
+        processShop();
     }
 
     function copyCommand(btn, cmd) {
@@ -391,7 +392,8 @@
         }, 1200);
     }
 
-    displayShop(soundEffects);
+    // Initialize
+    processShop();
 </script>
 
 </body>
