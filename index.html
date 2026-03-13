@@ -35,7 +35,6 @@
             gap: 25px;
         }
 
-        /* UPDATED ITEM BOX */
         .item {
             background: #2a2a2a;
             padding: 20px;
@@ -53,7 +52,6 @@
             border-color: #0bd2f4;
         }
 
-        /* UPDATED IMAGE STYLING */
         .item img {
             width: 100%;
             height: 150px;
@@ -64,21 +62,26 @@
             border: 1px solid #444;
         }
 
-        /* NEW READABLE TITLE STYLING */
         .item h3 {
             font-size: 18px;
-            margin: 10px 0;
-            letter-spacing: 1.5px; /* Pushes letters apart */
+            margin: 10px 0 5px 0;
+            letter-spacing: 1.5px;
             color: #ffffff;
-            /* BLACK OUTLINE */
-            text-shadow: 2px 2px 0px #000, 
-                        -1px -1px 0px #000,  
-                         1px -1px 0px #000,
-                        -1px  1px 0px #000,
-                         1px  1px 0px #000;
+            text-shadow: 2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000, 1px 1px 0px #000;
         }
 
-        .item p {
+        /* STYLING FOR THE VISIBLE COMMAND */
+        .command-hint {
+            color: #0bd2f4;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px dashed #444;
+        }
+
+        .item p.price-tag {
             font-size: 14px;
             color: #bbb;
             margin-bottom: 15px;
@@ -197,21 +200,15 @@
     { name: "Yung Walnut", price: 5, img: "yungwalnut.png", command: "!yungwalnut" },
     
     // --- GROUPED BY IMAGE ---
-
-    // Bas Rutten Group (basrutten.png)
     { name: "Bas Rutten 01", price: 5, img: "basrutten.png", command: "!basrutten01" },
     { name: "Bas Rutten 02", price: 5, img: "basrutten.png", command: "!basrutten02" },
     { name: "Bas Rutten 03", price: 5, img: "basrutten.png", command: "!basrutten03" },
     { name: "Bas Rutten 04", price: 5, img: "basrutten.png", command: "!basrutten04" },
-
-    // Darius Group (darius.png)
     { name: "Darius - GO DA BED", price: 5, img: "darius.png", command: "!darius01" },
     { name: "Darius - Closet", price: 10, img: "darius.png", command: "!darius02" },
     { name: "Darius - Day", price: 10, img: "darius.png", command: "!darius03" },
     { name: "Darius - Stim 01", price: 5, img: "darius.png", command: "!darius04" },
     { name: "Darius - Stim 02", price: 5, img: "darius.png", command: "!darius05" },
-
-    // Dico Group (dico.png)
     { name: "Dico - BottomTop", price: 5, img: "dico.png", command: "!dico01" },
     { name: "Dico - Fire in the hole", price: 5, img: "dico.png", command: "!dico02" },
     { name: "Dico - Food", price: 5, img: "dico.png", command: "!dico03" },
@@ -230,12 +227,8 @@
     { name: "Dico - Suck", price: 5, img: "dico.png", command: "!dico16" },
     { name: "Dico - Velcro", price: 5, img: "dico.png", command: "!dico17" },
     { name: "Dico - MikiDees", price: 5, img: "dico.png", command: "!dico18" },
-
-    // Dozer Group (dozer.png)
     { name: "Bored Sir", price: 5, img: "dozer.png", command: "!boredsir" },
     { name: "Learned how to Swim", price: 5, img: "dozer.png", command: "!swim" },
-
-    // GI Joe Group (gijoe.png)
     { name: "GI Joe - Bodymassage", price: 5, img: "gijoe.png", command: "!gijoe01" },
     { name: "GI Joe - Bus Ride", price: 25, img: "gijoe.png", command: "!gijoe02" },
     { name: "GI Joe - Detective", price: 5, img: "gijoe.png", command: "!gijoe03" },
@@ -247,48 +240,29 @@
     { name: "GI Joe - Im a computer", price: 5, img: "gijoe.png", command: "!gijoe09" },
     { name: "GI Joe - Porkchop", price: 5, img: "gijoe.png", command: "!gijoe10" },
     { name: "GI Joe - Stick", price: 5, img: "gijoe.png", command: "!gijoe11" },
-
-    // GTA Group (gta.png)
     { name: "GTA3 - BrightIdeas", price: 5, img: "gta.png", command: "!gta01" },
     { name: "GTA3 - GaZoomBas", price: 5, img: "gta.png", command: "!gta02" },
     { name: "GTA3 - GoOnVacation", price: 5, img: "gta.png", command: "!gta03" },
     { name: "GTA3 - HUHCOUSIN", price: 5, img: "gta.png", command: "!gta04" },
-
-    // Halo Group (halo.png)
     { name: "Halo - Backup", price: 5, img: "halo.png", command: "!halo01" },
     { name: "Halo - Digging In Me", price: 5, img: "halo.png", command: "!halo02" },
-
-    // Merill Group (merill.png)
     { name: "HI ERRAHBODY", price: 5, img: "merill.png", command: "!merillhoward01" },
     { name: "THIS IS WONDERFUL", price: 5, img: "merill.png", command: "!merillhoward02" },
-
-    // Piss Group (scarymovie01.png)
     { name: "Piss on yo face", price: 10, img: "scarymovie01.png", command: "!pisson" },
-
-    // Singer Group (singer.png)
     { name: "Belly Button", price: 5, img: "singer.png", command: "!bellybutton" },
     { name: "BoneSaw", price: 5, img: "singer.png", command: "!bonesaw" },
-
-    // Sponge Group (spongebob / krabz)
     { name: "Oh Brother", price: 5, img: "ohbrother.png", command: "!spongebob01" },
     { name: "Mr. Krabz", price: 5, img: "mrkrabz.png", command: "!spongebob02" },
-
-    // Suffering Group (thesuffering.png)
     { name: "That's Right Fuck His Ass Up!", price: 5, img: "thesuffering.png", command: "!thesuffering01" },
     { name: "The Suffering", price: 15, img: "thesuffering.png", command: "!thesuffering02" },
-
-    // Unforgivable Group (unforgivable.png)
     { name: "Unforgivable 01", price: 5, img: "unforgivable.png", command: "!unforgivable01" },
     { name: "Unforgivable 02", price: 5, img: "unforgivable.png", command: "!unforgivable02" },
     { name: "Unforgivable 03", price: 5, img: "unforgivable.png", command: "!unforgivable03" },
-
-    // Ventrilo Group (ventrilo.png)
     { name: "Phone Bone", price: 10, img: "ventrilo.png", command: "!maldaven" },
-
-    // Yogurt Group (yogurt / yogurt02)
     { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt" },
     { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt" }
 ];
+
     const container = document.getElementById('shop-container');
 
     function displayShop(items) {
@@ -298,8 +272,9 @@
                 <div class="item">
                     <img src="images/${effect.img}" alt="${effect.name}">
                     <h3>${effect.name}</h3>
-                    <p>${effect.price} Coins</p>
-                    <button onclick="copyCommand('${effect.command}')">Copy Command</button>
+                    <div class="command-hint">${effect.command}</div>
+                    <p class="price-tag">${effect.price} Coins</p>
+                    <button onclick="copyCommand(this, '${effect.command}')">Copy Command</button>
                 </div>
             `;
         });
@@ -308,18 +283,28 @@
     function filterShop() {
         const searchText = document.getElementById('searchBar').value.toLowerCase();
         const filteredItems = soundEffects.filter(item => 
-            item.name.toLowerCase().includes(searchText)
+            item.name.toLowerCase().includes(searchText) || 
+            item.command.toLowerCase().includes(searchText)
         );
         displayShop(filteredItems);
     }
 
-    function copyCommand(cmd) {
+    function copyCommand(btn, cmd) {
         navigator.clipboard.writeText(cmd).then(() => {
             console.log("Copied " + cmd);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
         });
-        event.target.innerText = "COPIED!";
-        const btn = event.target;
-        setTimeout(() => { btn.innerText = "COPY COMMAND"; }, 1000);
+
+        // Visual Feedback on button
+        const originalText = "COPY COMMAND";
+        btn.innerText = "COPIED!";
+        btn.style.backgroundColor = "#28a745"; // Success green
+
+        setTimeout(() => { 
+            btn.innerText = originalText; 
+            btn.style.backgroundColor = "#ed7612"; // Back to orange
+        }, 1200);
     }
 
     displayShop(soundEffects);
@@ -327,7 +312,3 @@
 
 </body>
 </html>
-
-
-
-
