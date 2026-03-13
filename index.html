@@ -60,7 +60,8 @@
 
         .item {
             background: #2a2a2a;
-            padding: 20px;
+            /* ADDED TOP PADDING to make room for the star and push the image down */
+            padding: 50px 20px 20px 20px; 
             border-radius: 20px;
             width: 220px;
             border: 2px solid #333;
@@ -76,11 +77,12 @@
             border-color: #0bd2f4;
         }
 
-        /* NEW STAR STYLING & PLACEMENT */
+        /* UPDATED STAR STYLING & PLACEMENT (Centered at the top) */
         .fav-btn {
             position: absolute;
-            top: 155px; /* Positioned right at the bottom edge of the 150px image */
-            right: 25px; /* Tucked into the right side */
+            top: 15px; /* Positioned near the top edge */
+            left: 50%; /* Start at the horizontal center */
+            transform: translateX(-50%); /* Pull back by half its width to perfectly center */
             background: none;
             border: none;
             font-size: 26px;
@@ -93,7 +95,7 @@
             /* The "Empty" look: transparent fill with a gold border */
             color: transparent;
             -webkit-text-stroke: 2px #ffcf40; 
-            transition: transform 0.1s ease;
+            transition: transform 0.1s ease, color 0.1s ease, -webkit-text-stroke 0.1s ease;
         }
 
         /* The "Filled" look when favorited */
@@ -104,7 +106,8 @@
         }
 
         .fav-btn:hover {
-            transform: scale(1.2);
+            /* Keep centered on hover scale */
+            transform: translateX(-50%) scale(1.2); 
         }
 
         .item img {
@@ -115,6 +118,8 @@
             background: #000;
             margin-bottom: 15px;
             border: 1px solid #444;
+            /* Ensure the image is pushed down by the padding */
+            margin-top: 0; 
         }
 
         .item h3 {
@@ -337,8 +342,8 @@
             const isFav = favorites.includes(effect.command) ? "is-fav" : "";
             container.innerHTML += `
                 <div class="item">
-                    <img src="images/${effect.img}" alt="${effect.name}">
                     <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
+                    <img src="images/${effect.img}" alt="${effect.name}">
                     <h3>${effect.name}</h3>
                     <div class="command-hint">${effect.command}</div>
                     <p class="price-tag">${effect.price} Coins</p>
