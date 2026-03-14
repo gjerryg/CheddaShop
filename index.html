@@ -9,11 +9,10 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background-color: rgba(26, 26, 26, 0.9); /* Transparent dark background */
-            backdrop-filter: blur(10px); /* Blurs content behind it */
+            background-color: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
             padding: 20px 10px;
             border-bottom: 2px solid #333;
-            margin-bottom: 20px;
         }
 
         body {
@@ -21,7 +20,7 @@
             background-color: #1a1a1a;
             color: white;
             text-align: center;
-            padding: 0; /* Changed to 0 so header hits the top */
+            padding: 0;
             margin: 0;
         }
 
@@ -36,6 +35,32 @@
             gap: 15px;
             max-width: 1000px;
             margin: 0 auto;
+        }
+
+        /* TAB STYLING */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tab-btn {
+            background-color: #333;
+            color: #888;
+            border: 2px solid #444;
+            padding: 10px 25px;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            font-family: 'Bungee', cursive;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background-color: #444;
+            color: #0bd2f4;
+            border-color: #0bd2f4;
+            border-bottom: 2px solid #444;
         }
 
         #searchBar {
@@ -162,7 +187,7 @@
 
 <header>
     <div class="controls">
-        <input type="text" id="searchBar" placeholder="Search..." onkeyup="processShop()">
+        <input type="text" id="searchBar" placeholder="Search this tab..." onkeyup="processShop()">
         
         <button id="favToggle" class="control-btn" onclick="toggleFavFilter()">Favorites ⭐</button>
         
@@ -176,164 +201,250 @@
 
 <h1><span class="chedda">Chedda</span><span class="coin">Coin</span> Shop</h1>
 
+<div class="tabs">
+    <button id="tab-general" class="tab-btn active" onclick="switchTab('general')">Soundboard</button>
+    <button id="tab-farts" class="tab-btn" onclick="switchTab('farts')">The Fart Zone</button>
+</div>
+
 <div id="shop-container" class="shop"></div>
 
 <script>
    const soundEffects = [
-    { name: "18 Beers", price: 5, img: "18.png", command: "!18" },
-    { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna" },
-    { name: "AK47", price: 5, img: "ak47.png", command: "!ak47" },
-    { name: "Am I Ugly", price: 5, img: "amiugly.png", command: "!amiugly" },
-    { name: "BAWK", price: 5, img: "glover.png", command: "!glover" },
-    { name: "Beef Quesrito", price: 5, img: "tacobell.png", command: "!tacobell" },
-    { name: "Big Back", price: 5, img: "bigback.png", command: "!bigback" },
-    { name: "Bigger Fish to Fry", price: 5, img: "fish.png", command: "!fish" },
-    { name: "Bitch I'm Hungry", price: 5, img: "hungry.png", command: "!hungry" },
-    { name: "Blue Pill", price: 5, img: "bluepill.png", command: "!bluepill" },
-    { name: "Blue Wiener", price: 5, img: "blueween.png", command: "!Purane2Forever" },
-    { name: "Bone Spurs", price: 5, img: "bonespurs.png", command: "!bonespurs" },
-    { name: "Bout 2 NUT", price: 5, img: "dreamybull.png", command: "!dreamybull" },
-    { name: "BUST-A-NUT", price: 5, img: "bust.png", command: "!bustanut" },
-    { name: "Chik-Fil-A", price: 10, img: "chik.png", command: "!chikfila" },
-    { name: "Chinese Meal", price: 5, img: "chinese.png", command: "!chinese" },
-    { name: "Choco Ween", price: 5, img: "chocoween.png", command: "!chocoween" },
-    { name: "Choke De Chicken", price: 10, img: "choke.png", command: "!chokedechicken" },
-    { name: "Cloud Song", price: 5, img: "cloud.png", command: "!cloudsong" },
-    { name: "Code Blue", price: 5, img: "codeblue.png", command: "!codeblue" },
-    { name: "Cookies", price: 5, img: "corkie.png", command: "!corkie" },
-    { name: "Crows", price: 5, img: "crows.png", command: "!crows" },
-    { name: "Curry Sauce", price: 5, img: "curry.png", command: "!curry" },
-    { name: "Deagle", price: 5, img: "deagle.png", command: "!deagle" },
-    { name: "Dirty Dundee's", price: 5, img: "dundee.png", command: "!dundee" },
-    { name: "Don't Come In", price: 10, img: "mental.png", command: "!mentalhospital" },
-    { name: "DooDoDooAhh", price: 5, img: "doododoo.png", command: "!doododooahh" },
-    { name: "Dr. Pepa?", price: 5, img: "drpepa.png", command: "!drpepa" },
-    { name: "Eekum Bokum", price: 5, img: "banjo.png", command: "!banjo" },
-    { name: "Fat Fuck", price: 5, img: "fatfuck.png", command: "!fatfuck" },
-    { name: "Fuck It's A Sunday", price: 5, img: "sunday.png", command: "!sunday" },
-    { name: "Fuck Load Beer", price: 5, img: "loadofbeer.png", command: "!loadofbeer" },
-    { name: "Fuck you, I'm trying to help you", price: 5, img: "motherfucker.png", command: "!helpyou" },
-    { name: "Fuckin Camp", price: 5, img: "camp.png", command: "!camp" },
-    { name: "Ginger Gooch", price: 5, img: "ginger.png", command: "!ginger" },
-    { name: "Grandpa Ballzack", price: 5, img: "grandpa.png", command: "!grandpa" },
-    { name: "Gucci Mane sings Lenny Kravitz", price: 5, img: "gucci.png", command: "!gucci" },
-    { name: "Hong Kong 97", price: 10, img: "hongkong.png", command: "!hongkong97" },
-    { name: "Hot Cheeto Kid", price: 5, img: "hotcheeto.png", command: "!hotcheetokid" },
-    { name: "I Love Lasagna", price: 5, img: "lasagna.png", command: "!lasagna" },
-    { name: "I'm Gay", price: 15, img: "imgay.png", command: "!imgay" },
-    { name: "It Hurts", price: 5, img: "ithurts.png", command: "!ithurts" },
-    { name: "It39s Easy", price: 5, img: "cantbelieve.png", command: "!cantbelieve" },
-    { name: "Jelly Beans", price: 5, img: "jellybean.png", command: "!jellybean" },
-    { name: "Jerry Chant", price: 10, img: "jerryspringer.png", command: "!jerryspringer" },
-    { name: "Just Drink Beers", price: 5, img: "b33rs.png", command: "!b33rs" },
-    { name: "Konnichiwa", price: 5, img: "konnichiwa.png", command: "!konnichiwa" },
-    { name: "Law & Order", price: 5, img: "lawnorder.png", command: "!lawnorder" },
-    { name: "Lord Menghu", price: 5, img: "menghu.png", command: "!menghu" },
-    { name: "Make me wanna Jizz", price: 10, img: "makejizz.png", command: "!makemewannajizz" },
-    { name: "MIKIDEES", price: 5, img: "mcdons.png", command: "!mcdons" },
-    { name: "Mudder Fawker", price: 5, img: "mudderfugger.png", command: "!mudderfawker" },
-    { name: "Obi-Wan", price: 5, img: "obiwan.png", command: "!obiwan" },
-    { name: "OMG TODAY", price: 5, img: "omgtoday.png", command: "!omgtoday" },
-    { name: "Peanut Butter Crunch", price: 5, img: "peanutbutter.png", command: "!crunch" },
-    { name: "Peter Griffin", price: 5, img: "peter.png", command: "!peter" },
-    { name: "Pizza Wiener", price: 5, img: "pizzaween.png", command: "!pizzaween" },
-    { name: "Pod RACER", price: 5, img: "podracer.png", command: "!podracer" },
-    { name: "Poly Pocket", price: 10, img: "poly.png", command: "!polypocket" },
-    { name: "Ralf", price: 5, img: "ralf.png", command: "!iamaweener" },
-    { name: "Ram Rod Ya", price: 5, img: "ramrod.png", command: "!ramrod" },
-    { name: "Ruckus & Mud", price: 5, img: "bam.png", command: "!ruckus" },
-    { name: "Schiggity Schiggity Schwag", price: 5, img: "schiggity.png", command: "!schiggity" },
-    { name: "Sex Noises", price: 5, img: "sexnoises.png", command: "!lalalala" },
-    { name: "Shake Weight", price: 5, img: "shakeweight.png", command: "!shakeweight" },
-    { name: "Smells like ass", price: 5, img: "smells.png", command: "!smells" },
-    { name: "Smoke Old Bitch", price: 5, img: "smoke.png", command: "!smoke" },
-    { name: "STFU", price: 5, img: "stfu.png", command: "!stfu" },
-    { name: "Suck my DICK", price: 5, img: "suck.png", command: "!suck" },
-    { name: "Suk-A-Fart", price: 5, img: "rocco.png", command: "!rocco" },
-    { name: "Throat Punch", price: 5, img: "throatpunch.png", command: "!throatpunch" },
-    { name: "Watch yo Profamity", price: 5, img: "profamity.png", command: "!profamity" },
-    { name: "WAZZA", price: 10, img: "wazza.png", command: "!wazza" },
-    { name: "WET WET WET", price: 10, img: "wet.png", command: "!wetwetwet" },
-    { name: "WTF GRENADE", price: 5, img: "grenade.png", command: "!grenade" },
-    { name: "Yung Walnut", price: 5, img: "yungwalnut.png", command: "!yungwalnut" },
-    { name: "Bas Rutten 01", price: 5, img: "basrutten.png", command: "!basrutten01" },
-    { name: "Bas Rutten 02", price: 5, img: "basrutten.png", command: "!basrutten02" },
-    { name: "Bas Rutten 03", price: 5, img: "basrutten.png", command: "!basrutten03" },
-    { name: "Bas Rutten 04", price: 5, img: "basrutten.png", command: "!basrutten04" },
-    { name: "Darius - GO DA BED", price: 5, img: "darius.png", command: "!darius01" },
-    { name: "Darius - Closet", price: 10, img: "darius.png", command: "!darius02" },
-    { name: "Darius - Day", price: 10, img: "darius.png", command: "!darius03" },
-    { name: "Darius - Stim 01", price: 5, img: "darius.png", command: "!darius04" },
-    { name: "Darius - Stim 02", price: 5, img: "darius.png", command: "!darius05" },
-    { name: "Dico - BottomTop", price: 5, img: "dico.png", command: "!dico01" },
-    { name: "Dico - Fire in the hole", price: 5, img: "dico.png", command: "!dico02" },
-    { name: "Dico - Food", price: 5, img: "dico.png", command: "!dico03" },
-    { name: "Dico - Sloppy", price: 25, img: "dico.png", command: "!dico04" },
-    { name: "Dico - Suck yo dick fo you", price: 5, img: "dico.png", command: "!dico05" },
-    { name: "Dico - Jizz", price: 5, img: "dico.png", command: "!dico06" },
-    { name: "Dico - Kickin Boxes", price: 5, img: "dico.png", command: "!dico07" },
-    { name: "Dico - Not serious very serious", price: 5, img: "dico.png", command: "!dico08" },
-    { name: "Dico - Orange", price: 5, img: "dico.png", command: "!dico09" },
-    { name: "Dico - Pendelton", price: 5, img: "dico.png", command: "!dico10" },
-    { name: "Dico - Psychedillic", price: 5, img: "dico.png", command: "!dico11" },
-    { name: "Dico - What Color?", price: 5, img: "dico.png", command: "!dico12" },
-    { name: "Dico - QVC", price: 5, img: "dico.png", command: "!dico13" },
-    { name: "Dico - Mayo", price: 5, img: "dico.png", command: "!dico14" },
-    { name: "Dico - Sprinkles", price: 5, img: "dico.png", command: "!dico15" },
-    { name: "Dico - Suck", price: 5, img: "dico.png", command: "!dico16" },
-    { name: "Dico - Velcro", price: 5, img: "dico.png", command: "!dico17" },
-    { name: "Dico - MikiDees", price: 5, img: "dico.png", command: "!dico18" },
-    { name: "Bored Sir", price: 5, img: "dozer.png", command: "!boredsir" },
-    { name: "Learned how to Swim", price: 5, img: "dozer.png", command: "!swim" },
-    { name: "GI Joe - Bodymassage", price: 5, img: "gijoe.png", command: "!gijoe01" },
-    { name: "GI Joe - Bus Ride", price: 25, img: "gijoe.png", command: "!gijoe02" },
-    { name: "GI Joe - Detective", price: 5, img: "gijoe.png", command: "!gijoe03" },
-    { name: "GI Joe - LGBTQ 01", price: 5, img: "gijoe.png", command: "!gijoe04" },
-    { name: "GI Joe - LGBTQ 02", price: 5, img: "gijoe.png", command: "!gijoe05" },
-    { name: "GI Joe - LGBTQ 03", price: 5, img: "gijoe.png", command: "!gijoe06" },
-    { name: "GI Joe - Get the Fuck out of Here", price: 10, img: "gijoe.png", command: "!gijoe07" },
-    { name: "GI Joe - Hit it Again", price: 5, img: "gijoe.png", command: "!gijoe08" },
-    { name: "GI Joe - Im a computer", price: 5, img: "gijoe.png", command: "!gijoe09" },
-    { name: "GI Joe - Porkchop", price: 5, img: "gijoe.png", command: "!gijoe10" },
-    { name: "GI Joe - Stick", price: 5, img: "gijoe.png", command: "!gijoe11" },
-    { name: "GTA3 - BrightIdeas", price: 5, img: "gta.png", command: "!gta01" },
-    { name: "GTA3 - GaZoomBas", price: 5, img: "gta.png", command: "!gta02" },
-    { name: "GTA3 - GoOnVacation", price: 5, img: "gta.png", command: "!gta03" },
-    { name: "GTA3 - HUHCOUSIN", price: 5, img: "gta.png", command: "!gta04" },
-    { name: "Halo - Backup", price: 5, img: "halo.png", command: "!halo01" },
-    { name: "Halo - Digging In Me", price: 5, img: "halo.png", command: "!halo02" },
-    { name: "HI ERRAHBODY", price: 5, img: "merill.png", command: "!merillhoward01" },
-    { name: "THIS IS WONDERFUL", price: 5, img: "merill.png", command: "!merillhoward02" },
-    { name: "Piss on yo face", price: 10, img: "scarymovie01.png", command: "!pisson" },
-    { name: "Belly Button", price: 5, img: "singer.png", command: "!bellybutton" },
-    { name: "BoneSaw", price: 5, img: "singer.png", command: "!bonesaw" },
-    { name: "Oh Brother", price: 5, img: "ohbrother.png", command: "!spongebob01" },
-    { name: "Mr. Krabz", price: 5, img: "mrkrabz.png", command: "!spongebob02" },
-    { name: "That's Right Fuck His Ass Up!", price: 5, img: "thesuffering.png", command: "!thesuffering01" },
-    { name: "The Suffering", price: 15, img: "thesuffering.png", command: "!thesuffering02" },
-    { name: "Unforgivable 01", price: 5, img: "unforgivable.png", command: "!unforgivable01" },
-    { name: "Unforgivable 02", price: 5, img: "unforgivable.png", command: "!unforgivable02" },
-    { name: "Unforgivable 03", price: 5, img: "unforgivable.png", command: "!unforgivable03" },
-    { name: "Phone Bone", price: 10, img: "ventrilo.png", command: "!maldaven" },
-    { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt" },
-    { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt" }
+    // ORIGINAL SOUNDS
+    { name: "18 Beers", price: 5, img: "18.png", command: "!18", cat: "general" },
+    { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna", cat: "general" },
+    { name: "AK47", price: 5, img: "ak47.png", command: "!ak47", cat: "general" },
+    { name: "Am I Ugly", price: 5, img: "amiugly.png", command: "!amiugly", cat: "general" },
+    { name: "BAWK", price: 5, img: "glover.png", command: "!glover", cat: "general" },
+    { name: "Beef Quesrito", price: 5, img: "tacobell.png", command: "!tacobell", cat: "general" },
+    { name: "Big Back", price: 5, img: "bigback.png", command: "!bigback", cat: "general" },
+    { name: "Bigger Fish to Fry", price: 5, img: "fish.png", command: "!fish", cat: "general" },
+    { name: "Bitch I'm Hungry", price: 5, img: "hungry.png", command: "!hungry", cat: "general" },
+    { name: "Blue Pill", price: 5, img: "bluepill.png", command: "!bluepill", cat: "general" },
+    { name: "Blue Wiener", price: 5, img: "blueween.png", command: "!Purane2Forever", cat: "general" },
+    { name: "Bone Spurs", price: 5, img: "bonespurs.png", command: "!bonespurs", cat: "general" },
+    { name: "Bout 2 NUT", price: 5, img: "dreamybull.png", command: "!dreamybull", cat: "general" },
+    { name: "BUST-A-NUT", price: 5, img: "bust.png", command: "!bustanut", cat: "general" },
+    { name: "Chik-Fil-A", price: 10, img: "chik.png", command: "!chikfila", cat: "general" },
+    { name: "Chinese Meal", price: 5, img: "chinese.png", command: "!chinese", cat: "general" },
+    { name: "Choco Ween", price: 5, img: "chocoween.png", command: "!chocoween", cat: "general" },
+    { name: "Choke De Chicken", price: 10, img: "choke.png", command: "!chokedechicken", cat: "general" },
+    { name: "Cloud Song", price: 5, img: "cloud.png", command: "!cloudsong", cat: "general" },
+    { name: "Code Blue", price: 5, img: "codeblue.png", command: "!codeblue", cat: "general" },
+    { name: "Cookies", price: 5, img: "corkie.png", command: "!corkie", cat: "general" },
+    { name: "Crows", price: 5, img: "crows.png", command: "!crows", cat: "general" },
+    { name: "Curry Sauce", price: 5, img: "curry.png", command: "!curry", cat: "general" },
+    { name: "Deagle", price: 5, img: "deagle.png", command: "!deagle", cat: "general" },
+    { name: "Dirty Dundee's", price: 5, img: "dundee.png", command: "!dundee", cat: "general" },
+    { name: "Don't Come In", price: 10, img: "mental.png", command: "!mentalhospital", cat: "general" },
+    { name: "DooDoDooAhh", price: 5, img: "doododoo.png", command: "!doododooahh", cat: "general" },
+    { name: "Dr. Pepa?", price: 5, img: "drpepa.png", command: "!drpepa", cat: "general" },
+    { name: "Eekum Bokum", price: 5, img: "banjo.png", command: "!banjo", cat: "general" },
+    { name: "Fat Fuck", price: 5, img: "fatfuck.png", command: "!fatfuck", cat: "general" },
+    { name: "Fuck It's A Sunday", price: 5, img: "sunday.png", command: "!sunday", cat: "general" },
+    { name: "Fuck Load Beer", price: 5, img: "loadofbeer.png", command: "!loadofbeer", cat: "general" },
+    { name: "Fuck you, I'm trying to help you", price: 5, img: "motherfucker.png", command: "!helpyou", cat: "general" },
+    { name: "Fuckin Camp", price: 5, img: "camp.png", command: "!camp", cat: "general" },
+    { name: "Ginger Gooch", price: 5, img: "ginger.png", command: "!ginger", cat: "general" },
+    { name: "Grandpa Ballzack", price: 5, img: "grandpa.png", command: "!grandpa", cat: "general" },
+    { name: "Gucci Mane sings Lenny Kravitz", price: 5, img: "gucci.png", command: "!gucci", cat: "general" },
+    { name: "Hong Kong 97", price: 10, img: "hongkong.png", command: "!hongkong97", cat: "general" },
+    { name: "Hot Cheeto Kid", price: 5, img: "hotcheeto.png", command: "!hotcheetokid", cat: "general" },
+    { name: "I Love Lasagna", price: 5, img: "lasagna.png", command: "!lasagna", cat: "general" },
+    { name: "I'm Gay", price: 15, img: "imgay.png", command: "!imgay", cat: "general" },
+    { name: "It Hurts", price: 5, img: "ithurts.png", command: "!ithurts", cat: "general" },
+    { name: "It39s Easy", price: 5, img: "cantbelieve.png", command: "!cantbelieve", cat: "general" },
+    { name: "Jelly Beans", price: 5, img: "jellybean.png", command: "!jellybean", cat: "general" },
+    { name: "Jerry Chant", price: 10, img: "jerryspringer.png", command: "!jerryspringer", cat: "general" },
+    { name: "Just Drink Beers", price: 5, img: "b33rs.png", command: "!b33rs", cat: "general" },
+    { name: "Konnichiwa", price: 5, img: "konnichiwa.png", command: "!konnichiwa", cat: "general" },
+    { name: "Law & Order", price: 5, img: "lawnorder.png", command: "!lawnorder", cat: "general" },
+    { name: "Lord Menghu", price: 5, img: "menghu.png", command: "!menghu", cat: "general" },
+    { name: "Make me wanna Jizz", price: 10, img: "makejizz.png", command: "!makemewannajizz", cat: "general" },
+    { name: "MIKIDEES", price: 5, img: "mcdons.png", command: "!mcdons", cat: "general" },
+    { name: "Mudder Fawker", price: 5, img: "mudderfugger.png", command: "!mudderfawker", cat: "general" },
+    { name: "Obi-Wan", price: 5, img: "obiwan.png", command: "!obiwan", cat: "general" },
+    { name: "OMG TODAY", price: 5, img: "omgtoday.png", command: "!omgtoday", cat: "general" },
+    { name: "Peanut Butter Crunch", price: 5, img: "peanutbutter.png", command: "!crunch", cat: "general" },
+    { name: "Peter Griffin", price: 5, img: "peter.png", command: "!peter", cat: "general" },
+    { name: "Pizza Wiener", price: 5, img: "pizzaween.png", command: "!pizzaween", cat: "general" },
+    { name: "Pod RACER", price: 5, img: "podracer.png", command: "!podracer", cat: "general" },
+    { name: "Poly Pocket", price: 10, img: "poly.png", command: "!polypocket", cat: "general" },
+    { name: "Ralf", price: 5, img: "ralf.png", command: "!iamaweener", cat: "general" },
+    { name: "Ram Rod Ya", price: 5, img: "ramrod.png", command: "!ramrod", cat: "general" },
+    { name: "Ruckus & Mud", price: 5, img: "bam.png", command: "!ruckus", cat: "general" },
+    { name: "Schiggity Schiggity Schwag", price: 5, img: "schiggity.png", command: "!schiggity", cat: "general" },
+    { name: "Sex Noises", price: 5, img: "sexnoises.png", command: "!lalalala", cat: "general" },
+    { name: "Shake Weight", price: 5, img: "shakeweight.png", command: "!shakeweight", cat: "general" },
+    { name: "Smells like ass", price: 5, img: "smells.png", command: "!smells", cat: "general" },
+    { name: "Smoke Old Bitch", price: 5, img: "smoke.png", command: "!smoke", cat: "general" },
+    { name: "STFU", price: 5, img: "stfu.png", command: "!stfu", cat: "general" },
+    { name: "Suck my DICK", price: 5, img: "suck.png", command: "!suck", cat: "general" },
+    { name: "Suk-A-Fart", price: 5, img: "rocco.png", command: "!rocco", cat: "general" },
+    { name: "Throat Punch", price: 5, img: "throatpunch.png", command: "!throatpunch", cat: "general" },
+    { name: "Watch yo Profamity", price: 5, img: "profamity.png", command: "!profamity", cat: "general" },
+    { name: "WAZZA", price: 10, img: "wazza.png", command: "!wazza", cat: "general" },
+    { name: "WET WET WET", price: 10, img: "wet.png", command: "!wetwetwet", cat: "general" },
+    { name: "WTF GRENADE", price: 5, img: "grenade.png", command: "!grenade", cat: "general" },
+    { name: "Yung Walnut", price: 5, img: "yungwalnut.png", command: "!yungwalnut", cat: "general" },
+    { name: "Bas Rutten 01", price: 5, img: "basrutten.png", command: "!basrutten01", cat: "general" },
+    { name: "Bas Rutten 02", price: 5, img: "basrutten.png", command: "!basrutten02", cat: "general" },
+    { name: "Bas Rutten 03", price: 5, img: "basrutten.png", command: "!basrutten03", cat: "general" },
+    { name: "Bas Rutten 04", price: 5, img: "basrutten.png", command: "!basrutten04", cat: "general" },
+    { name: "Darius - GO DA BED", price: 5, img: "darius.png", command: "!darius01", cat: "general" },
+    { name: "Darius - Closet", price: 10, img: "darius.png", command: "!darius02", cat: "general" },
+    { name: "Darius - Day", price: 10, img: "darius.png", command: "!darius03", cat: "general" },
+    { name: "Darius - Stim 01", price: 5, img: "darius.png", command: "!darius04", cat: "general" },
+    { name: "Darius - Stim 02", price: 5, img: "darius.png", command: "!darius05", cat: "general" },
+    { name: "Dico - BottomTop", price: 5, img: "dico.png", command: "!dico01", cat: "general" },
+    { name: "Dico - Fire in the hole", price: 5, img: "dico.png", command: "!dico02", cat: "general" },
+    { name: "Dico - Food", price: 5, img: "dico.png", command: "!dico03", cat: "general" },
+    { name: "Dico - Sloppy", price: 25, img: "dico.png", command: "!dico04", cat: "general" },
+    { name: "Dico - Suck yo dick fo you", price: 5, img: "dico.png", command: "!dico05", cat: "general" },
+    { name: "Dico - Jizz", price: 5, img: "dico.png", command: "!dico06", cat: "general" },
+    { name: "Dico - Kickin Boxes", price: 5, img: "dico.png", command: "!dico07", cat: "general" },
+    { name: "Dico - Not serious very serious", price: 5, img: "dico.png", command: "!dico08", cat: "general" },
+    { name: "Dico - Orange", price: 5, img: "dico.png", command: "!dico09", cat: "general" },
+    { name: "Dico - Pendelton", price: 5, img: "dico.png", command: "!dico10", cat: "general" },
+    { name: "Dico - Psychedillic", price: 5, img: "dico.png", command: "!dico11", cat: "general" },
+    { name: "Dico - What Color?", price: 5, img: "dico.png", command: "!dico12", cat: "general" },
+    { name: "Dico - QVC", price: 5, img: "dico.png", command: "!dico13", cat: "general" },
+    { name: "Dico - Mayo", price: 5, img: "dico.png", command: "!dico14", cat: "general" },
+    { name: "Dico - Sprinkles", price: 5, img: "dico.png", command: "!dico15", cat: "general" },
+    { name: "Dico - Suck", price: 5, img: "dico.png", command: "!dico16", cat: "general" },
+    { name: "Dico - Velcro", price: 5, img: "dico.png", command: "!dico17", cat: "general" },
+    { name: "Dico - MikiDees", price: 5, img: "dico.png", command: "!dico18", cat: "general" },
+    { name: "Bored Sir", price: 5, img: "dozer.png", command: "!boredsir", cat: "general" },
+    { name: "Learned how to Swim", price: 5, img: "dozer.png", command: "!swim", cat: "general" },
+    { name: "GI Joe - Bodymassage", price: 5, img: "gijoe.png", command: "!gijoe01", cat: "general" },
+    { name: "GI Joe - Bus Ride", price: 25, img: "gijoe.png", command: "!gijoe02", cat: "general" },
+    { name: "GI Joe - Detective", price: 5, img: "gijoe.png", command: "!gijoe03", cat: "general" },
+    { name: "GI Joe - LGBTQ 01", price: 5, img: "gijoe.png", command: "!gijoe04", cat: "general" },
+    { name: "GI Joe - LGBTQ 02", price: 5, img: "gijoe.png", command: "!gijoe05", cat: "general" },
+    { name: "GI Joe - LGBTQ 03", price: 5, img: "gijoe.png", command: "!gijoe06", cat: "general" },
+    { name: "GI Joe - Get the Fuck out of Here", price: 10, img: "gijoe.png", command: "!gijoe07", cat: "general" },
+    { name: "GI Joe - Hit it Again", price: 5, img: "gijoe.png", command: "!gijoe08", cat: "general" },
+    { name: "GI Joe - Im a computer", price: 5, img: "gijoe.png", command: "!gijoe09", cat: "general" },
+    { name: "GI Joe - Porkchop", price: 5, img: "gijoe.png", command: "!gijoe10", cat: "general" },
+    { name: "GI Joe - Stick", price: 5, img: "gijoe.png", command: "!gijoe11", cat: "general" },
+    { name: "GTA3 - BrightIdeas", price: 5, img: "gta.png", command: "!gta01", cat: "general" },
+    { name: "GTA3 - GaZoomBas", price: 5, img: "gta.png", command: "!gta02", cat: "general" },
+    { name: "GTA3 - GoOnVacation", price: 5, img: "gta.png", command: "!gta03", cat: "general" },
+    { name: "GTA3 - HUHCOUSIN", price: 5, img: "gta.png", command: "!gta04", cat: "general" },
+    { name: "Halo - Backup", price: 5, img: "halo.png", command: "!halo01", cat: "general" },
+    { name: "Halo - Digging In Me", price: 5, img: "halo.png", command: "!halo02", cat: "general" },
+    { name: "HI ERRAHBODY", price: 5, img: "merill.png", command: "!merillhoward01", cat: "general" },
+    { name: "THIS IS WONDERFUL", price: 5, img: "merill.png", command: "!merillhoward02", cat: "general" },
+    { name: "Piss on yo face", price: 10, img: "scarymovie01.png", command: "!pisson", cat: "general" },
+    { name: "Belly Button", price: 5, img: "singer.png", command: "!bellybutton", cat: "general" },
+    { name: "BoneSaw", price: 5, img: "singer.png", command: "!bonesaw", cat: "general" },
+    { name: "Oh Brother", price: 5, img: "ohbrother.png", command: "!spongebob01", cat: "general" },
+    { name: "Mr. Krabz", price: 5, img: "mrkrabz.png", command: "!spongebob02", cat: "general" },
+    { name: "That's Right Fuck His Ass Up!", price: 5, img: "thesuffering.png", command: "!thesuffering01", cat: "general" },
+    { name: "The Suffering", price: 15, img: "thesuffering.png", command: "!thesuffering02", cat: "general" },
+    { name: "Unforgivable 01", price: 5, img: "unforgivable.png", command: "!unforgivable01", cat: "general" },
+    { name: "Unforgivable 02", price: 5, img: "unforgivable.png", command: "!unforgivable02", cat: "general" },
+    { name: "Unforgivable 03", price: 5, img: "unforgivable.png", command: "!unforgivable03", cat: "general" },
+    { name: "Phone Bone", price: 10, img: "ventrilo.png", command: "!maldaven", cat: "general" },
+    { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt", cat: "general" },
+    { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt", cat: "general" },
+
+    // FART SOUNDS
+    { name: "001 Fart - Sonic", price: 2, img: "fart.png", command: "!fartgen01", cat: "farts" },
+    { name: "002 Fart - Bite", price: 2, img: "fart.png", command: "!fartgen02", cat: "farts" },
+    { name: "003 Fart - Lightsaber", price: 2, img: "fart.png", command: "!fartgen03", cat: "farts" },
+    { name: "004 Fart - Bass", price: 2, img: "fart.png", command: "!fartgen04", cat: "farts" },
+    { name: "005 Fart", price: 2, img: "fart.png", command: "!fartgen05", cat: "farts" },
+    { name: "006 Fart", price: 2, img: "fart.png", command: "!fartgen06", cat: "farts" },
+    { name: "007 Fart", price: 2, img: "fart.png", command: "!fartgen07", cat: "farts" },
+    { name: "008 Fart", price: 2, img: "fart.png", command: "!fartgen08", cat: "farts" },
+    { name: "009 Fart", price: 2, img: "fart.png", command: "!fartgen09", cat: "farts" },
+    { name: "010 Fart", price: 2, img: "fart.png", command: "!fartgen10", cat: "farts" },
+    { name: "011 Fart", price: 2, img: "fart.png", command: "!fartgen11", cat: "farts" },
+    { name: "012 Fart", price: 2, img: "fart.png", command: "!fartgen12", cat: "farts" },
+    { name: "013 Fart", price: 2, img: "fart.png", command: "!fartgen13", cat: "farts" },
+    { name: "014 Fart", price: 2, img: "fart.png", command: "!fartgen14", cat: "farts" },
+    { name: "015 Fart", price: 2, img: "fart.png", command: "!fartgen15", cat: "farts" },
+    { name: "016 Fart", price: 2, img: "fart.png", command: "!fartgen16", cat: "farts" },
+    { name: "017 Fart", price: 2, img: "fart.png", command: "!fartgen17", cat: "farts" },
+    { name: "018 Fart", price: 2, img: "fart.png", command: "!fartgen18", cat: "farts" },
+    { name: "019 Fart", price: 2, img: "fart.png", command: "!fartgen19", cat: "farts" },
+    { name: "020 Fart", price: 2, img: "fart.png", command: "!fartgen20", cat: "farts" },
+    { name: "021 Fart", price: 2, img: "fart.png", command: "!fartgen21", cat: "farts" },
+    { name: "022 Fart", price: 2, img: "fart.png", command: "!fartgen22", cat: "farts" },
+    { name: "023 Fart", price: 2, img: "fart.png", command: "!fartgen23", cat: "farts" },
+    { name: "024 Fart", price: 2, img: "fart.png", command: "!fartgen24", cat: "farts" },
+    { name: "025 Fart", price: 2, img: "fart.png", command: "!fartgen25", cat: "farts" },
+    { name: "026 Fart", price: 2, img: "fart.png", command: "!fartgen26", cat: "farts" },
+    { name: "027 Fart", price: 2, img: "fart.png", command: "!fartgen27", cat: "farts" },
+    { name: "028 Fart", price: 2, img: "fart.png", command: "!fartgen28", cat: "farts" },
+    { name: "029 Fart", price: 2, img: "fart.png", command: "!fartgen29", cat: "farts" },
+    { name: "030 Fart", price: 2, img: "fart.png", command: "!fartgen30", cat: "farts" },
+    { name: "031 Fart", price: 2, img: "fart.png", command: "!fartgen31", cat: "farts" },
+    { name: "032 Fart", price: 2, img: "fart.png", command: "!fartgen32", cat: "farts" },
+    { name: "033 Fart", price: 2, img: "fart.png", command: "!fartgen33", cat: "farts" },
+    { name: "034 Fart", price: 2, img: "fart.png", command: "!fartgen34", cat: "farts" },
+    { name: "035 Fart", price: 2, img: "fart.png", command: "!fartgen35", cat: "farts" },
+    { name: "036 Fart", price: 2, img: "fart.png", command: "!fartgen36", cat: "farts" },
+    { name: "037 Fart", price: 2, img: "fart.png", command: "!fartgen37", cat: "farts" },
+    { name: "038 Fart", price: 2, img: "fart.png", command: "!fartgen38", cat: "farts" },
+    { name: "039 Fart", price: 2, img: "fart.png", command: "!fartgen39", cat: "farts" },
+    { name: "040 Fart", price: 2, img: "fart.png", command: "!fartgen40", cat: "farts" },
+    { name: "041 Fart", price: 2, img: "fart.png", command: "!fartgen41", cat: "farts" },
+    { name: "042 Fart", price: 2, img: "fart.png", command: "!fartgen42", cat: "farts" },
+    { name: "043 Fart", price: 2, img: "fart.png", command: "!fartgen43", cat: "farts" },
+    { name: "044 Fart", price: 2, img: "fart.png", command: "!fartgen44", cat: "farts" },
+    { name: "045 Fart", price: 2, img: "fart.png", command: "!fartgen45", cat: "farts" },
+    { name: "046 Fart", price: 2, img: "fart.png", command: "!fartgen46", cat: "farts" },
+    { name: "047 Fart", price: 2, img: "fart.png", command: "!fartgen47", cat: "farts" },
+    { name: "048 Fart", price: 2, img: "fart.png", command: "!fartgen48", cat: "farts" },
+    { name: "049 Fart", price: 2, img: "fart.png", command: "!fartgen49", cat: "farts" },
+    { name: "050 Fart", price: 2, img: "fart.png", command: "!fartgen50", cat: "farts" },
+    { name: "051 Fart", price: 2, img: "fart.png", command: "!fartgen51", cat: "farts" },
+    { name: "052 Fart", price: 2, img: "fart.png", command: "!fartgen52", cat: "farts" },
+    { name: "053 Fart", price: 2, img: "fart.png", command: "!fartgen53", cat: "farts" },
+    { name: "054 Fart", price: 2, img: "fart.png", command: "!fartgen54", cat: "farts" },
+    { name: "055 Fart", price: 2, img: "fart.png", command: "!fartgen55", cat: "farts" },
+    { name: "056 Fart", price: 2, img: "fart.png", command: "!fartgen56", cat: "farts" },
+    { name: "057 Fart", price: 2, img: "fart.png", command: "!fartgen57", cat: "farts" },
+    { name: "058 Fart", price: 2, img: "fart.png", command: "!fartgen58", cat: "farts" },
+    { name: "059 Fart", price: 2, img: "fart.png", command: "!fartgen59", cat: "farts" },
+    { name: "060 Fart", price: 2, img: "fart.png", command: "!fartgen60", cat: "farts" },
+    { name: "061 Fart", price: 2, img: "fart.png", command: "!fartgen61", cat: "farts" },
+    { name: "062 Fart", price: 2, img: "fart.png", command: "!fartgen62", cat: "farts" },
+    { name: "063 Fart", price: 2, img: "fart.png", command: "!fartgen63", cat: "farts" },
+    { name: "064 Fart", price: 2, img: "fart.png", command: "!fartgen64", cat: "farts" }
    ];
 
     let showFavoritesOnly = false;
     let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
+    let currentTab = 'general'; // Default starting tab
 
-    // MAIN BRAIN: Processes Filtering, Searching, and Sorting all at once
+    function switchTab(tab) {
+        currentTab = tab;
+        
+        // Update UI styling for buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        
+        // Refresh the items shown
+        processShop();
+    }
+
+    // MAIN BRAIN: Processes Filtering, Searching, and Sorting based on the ACTIVE TAB
     function processShop() {
         const searchText = document.getElementById('searchBar').value.toLowerCase();
         const sortType = document.getElementById('sortSelect').value;
         const container = document.getElementById('shop-container');
 
-        // 1. FILTERING (Search + Favorites)
+        // 1. FILTERING (Category + Search + Favorites)
         let items = soundEffects.filter(item => {
+            const matchesTab = item.cat === currentTab;
             const matchesSearch = item.name.toLowerCase().includes(searchText) || 
                                  item.command.toLowerCase().includes(searchText);
             const matchesFav = showFavoritesOnly ? favorites.includes(item.command) : true;
-            return matchesSearch && matchesFav;
+            
+            return matchesTab && matchesSearch && matchesFav;
         });
 
         // 2. SORTING
@@ -346,7 +457,7 @@
         // 3. DISPLAY
         container.innerHTML = "";
         if (items.length === 0) {
-            container.innerHTML = "<p style='color:#888; margin-top:50px;'>Nothing found!</p>";
+            container.innerHTML = `<p style='color:#888; margin-top:50px;'>Nothing found in ${currentTab} sounds!</p>`;
             return;
         }
 
@@ -372,7 +483,7 @@
             favorites.push(cmd);
         }
         localStorage.setItem('cheddaFavs', JSON.stringify(favorites));
-        processShop(); // Refresh view
+        processShop(); 
     }
 
     function toggleFavFilter() {
