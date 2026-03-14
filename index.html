@@ -4,7 +4,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     
     <style>
-        /* STICKY HEADER STYLING */
         header {
             position: sticky;
             top: 0;
@@ -62,7 +61,6 @@
             border-bottom: 2px solid #444;
         }
 
-        /* Styling for when Favorites is active */
         body.fav-mode .tab-btn {
             opacity: 0.5;
             border-color: #444;
@@ -194,9 +192,7 @@
 <header>
     <div class="controls">
         <input type="text" id="searchBar" placeholder="Search..." onkeyup="processShop()">
-        
         <button id="favToggle" class="control-btn" onclick="toggleFavFilter()">Favorites ⭐</button>
-        
         <select id="sortSelect" onchange="processShop()">
             <option value="az">A-Z Sort</option>
             <option value="low">Price: Low-High</option>
@@ -216,7 +212,27 @@
 
 <script>
    const soundEffects = [
-    // GENERAL SOUNDS (Simplified for example, keep your full list here)
+    // NEW SOUNDS ADDED
+    { name: "Sriracha", price: 5, img: "sriracha.png", command: "!sriracha", cat: "general" },
+    { name: "Smash Bros Gasp", price: 5, img: "gasp.png", command: "!gasp", cat: "general" },
+    { name: "Italian - Bang", price: 5, img: "italian.png", command: "!italian01", cat: "general" },
+    { name: "Italian - Holding it", price: 5, img: "italian.png", command: "!italian02", cat: "general" },
+    { name: "Italian - Snap Finish", price: 5, img: "italian.png", command: "!italian03", cat: "general" },
+    { name: "Italian - Test", price: 5, img: "italian.png", command: "!italian04", cat: "general" },
+    { name: "FUCK OFF", price: 5, img: "tourettes.png", command: "!tourettes", cat: "general" },
+    { name: "BUY A BOAT", price: 5, img: "corkie02.png", command: "!boat", cat: "general" },
+    { name: "Ba Dum Tsss", price: 5, img: "drums.png", command: "!badumtsss", cat: "general" },
+    { name: "Slap my Gooch", price: 5, img: "gooch.png", command: "!gooch", cat: "general" },
+    { name: "Blast that ASS", price: 5, img: "blast.png", command: "!blast", cat: "general" },
+    { name: "I Bought Yogurts", price: 5, img: "yogurts.png", command: "!yogurts", cat: "general" },
+    { name: "Birthday", price: 30, img: "timneric.png", command: "!timnericbirthday", cat: "general" },
+    { name: "Not Like this", price: 5, img: "notlikethis.png", command: "!notlikethis", cat: "general" },
+    { name: "Merill - HI ERRAHBODY", price: 5, img: "merill.png", command: "!merillhoward01", cat: "general" },
+    { name: "Merill - THIS IS WONDERFUL", price: 5, img: "merill.png", command: "!merillhoward02", cat: "general" },
+    { name: "Merill - CH1KN", price: 5, img: "merill.png", command: "!merillhoward03", cat: "general" },
+    { name: "Merill - So Good!", price: 5, img: "merill.png", command: "!merillhoward04", cat: "general" },
+
+    // PREVIOUS SOUNDS
     { name: "18 Beers", price: 5, img: "18.png", command: "!18", cat: "general" },
     { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna", cat: "general" },
     { name: "AK47", price: 5, img: "ak47.png", command: "!ak47", cat: "general" },
@@ -259,7 +275,7 @@
     { name: "I Love Lasagna", price: 5, img: "lasagna.png", command: "!lasagna", cat: "general" },
     { name: "I'm Gay", price: 15, img: "imgay.png", command: "!imgay", cat: "general" },
     { name: "It Hurts", price: 5, img: "ithurts.png", command: "!ithurts", cat: "general" },
-    { name: "It39s Easy", price: 5, img: "cantbelieve.png", command: "!cantbelieve", cat: "general" },
+    { name: "It's Easy", price: 5, img: "cantbelieve.png", command: "!cantbelieve", cat: "general" },
     { name: "Jelly Beans", price: 5, img: "jellybean.png", command: "!jellybean", cat: "general" },
     { name: "Jerry Chant", price: 10, img: "jerryspringer.png", command: "!jerryspringer", cat: "general" },
     { name: "Just Drink Beers", price: 5, img: "b33rs.png", command: "!b33rs", cat: "general" },
@@ -339,8 +355,6 @@
     { name: "GTA3 - HUHCOUSIN", price: 5, img: "gta.png", command: "!gta04", cat: "general" },
     { name: "Halo - Backup", price: 5, img: "halo.png", command: "!halo01", cat: "general" },
     { name: "Halo - Digging In Me", price: 5, img: "halo.png", command: "!halo02", cat: "general" },
-    { name: "HI ERRAHBODY", price: 5, img: "merill.png", command: "!merillhoward01", cat: "general" },
-    { name: "THIS IS WONDERFUL", price: 5, img: "merill.png", command: "!merillhoward02", cat: "general" },
     { name: "Piss on yo face", price: 10, img: "scarymovie01.png", command: "!pisson", cat: "general" },
     { name: "Belly Button", price: 5, img: "singer.png", command: "!bellybutton", cat: "general" },
     { name: "BoneSaw", price: 5, img: "singer.png", command: "!bonesaw", cat: "general" },
@@ -428,16 +442,11 @@
 
     function switchTab(tab) {
         currentTab = tab;
-        
-        // Turn OFF the favorites global filter when switching tabs
         showFavoritesOnly = false;
         document.getElementById('favToggle').classList.remove('active');
         document.getElementById('mainBody').classList.remove('fav-mode');
-
-        // Update UI styling for buttons
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`tab-${tab}`).classList.add('active');
-        
         processShop();
     }
 
@@ -446,31 +455,26 @@
         const sortType = document.getElementById('sortSelect').value;
         const container = document.getElementById('shop-container');
 
-        // FILTER LOGIC
         let items = soundEffects.filter(item => {
             const matchesSearch = item.name.toLowerCase().includes(searchText) || 
                                  item.command.toLowerCase().includes(searchText);
             
             if (showFavoritesOnly) {
-                // If favorites mode is on, ignore the "cat" and show everything favorited
                 return matchesSearch && favorites.includes(item.command);
             } else {
-                // Otherwise, respect the active tab
                 return matchesSearch && item.cat === currentTab;
             }
         });
 
-        // SORT LOGIC
         items.sort((a, b) => {
             if (sortType === "az") return a.name.localeCompare(b.name);
             if (sortType === "low") return a.price - b.price;
             if (sortType === "high") return b.price - a.price;
         });
 
-        // DISPLAY LOGIC
         container.innerHTML = "";
         if (items.length === 0) {
-            const msg = showFavoritesOnly ? "You haven't favorited anything yet!" : `Nothing found in ${currentTab}!`;
+            const msg = showFavoritesOnly ? "Nothing favorited yet!" : "No sounds found!";
             container.innerHTML = `<p style='color:#888; margin-top:50px;'>${msg}</p>`;
             return;
         }
@@ -509,16 +513,14 @@
 
     function copyCommand(btn, cmd) {
         navigator.clipboard.writeText(cmd);
-        const originalText = "COPY COMMAND";
         btn.innerText = "COPIED!";
         btn.style.backgroundColor = "#28a745";
         setTimeout(() => { 
-            btn.innerText = originalText; 
+            btn.innerText = "COPY COMMAND"; 
             btn.style.backgroundColor = "#ed7612"; 
         }, 1200);
     }
 
-    // Initialize
     processShop();
 </script>
 
