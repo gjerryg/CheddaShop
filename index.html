@@ -107,7 +107,7 @@
             position: relative;
         }
 
-        .item:hover { transform: scale(1.05); border-color: #0bd2f4; }
+        .item:hover { transform: scale(1.02); border-color: #0bd2f4; }
 
         .fav-btn {
             position: absolute;
@@ -125,46 +125,30 @@
 
         .fav-btn.is-fav { color: #ffcf40; -webkit-text-stroke: 0px; }
 
-        .img-container {
-            position: relative;
-            width: 100%;
-            height: 150px;
-            cursor: pointer;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #000;
-        }
-
         .item img {
             width: 100%;
-            height: 100%;
-            object-fit: contain; 
-            pointer-events: none; /* Allows click to hit container */
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 10px;
         }
 
-        .play-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            background: rgba(0, 0, 0, 0);
-            transition: background 0.3s;
-            pointer-events: none; /* Allows click to hit container */
+        /* HIDES DOWNLOAD BUTTON FROM CHROME AUDIO PLAYER */
+        audio::-internal-media-controls-download-button {
+            display:none;
+        }
+        audio::-webkit-media-controls-enclosure {
+            overflow:hidden;
+        }
+        audio::-webkit-media-controls-panel {
+            width: calc(100% + 30px); /* Forces the download button out of view */
         }
 
-        .img-container:hover .play-overlay { background: rgba(0, 0, 0, 0.4); }
-
-        .play-icon {
-            font-size: 50px;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.2s;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        audio {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 15px;
         }
-
-        .img-container:hover .play-icon { opacity: 0.9; }
-
-        .hidden-audio { display: none; }
 
         .command-hint {
             color: #0bd2f4;
@@ -188,7 +172,7 @@
         }
     </style>
 </head>
-<body id="mainBody">
+<body>
 
 <header>
     <div class="controls">
@@ -452,13 +436,6 @@
         sounds.forEach(s => { s.pause(); s.currentTime = 0; });
     }
 
-    function playPreview(id) {
-        const audio = document.getElementById(id);
-        if (!audio) return;
-        stopAllAudio();
-        audio.play().catch(err => console.log("User interaction required first"));
-    }
-
     function processShop() {
         const searchText = document.getElementById('searchBar').value.toLowerCase();
         const sortType = document.getElementById('sortSelect').value;
@@ -480,21 +457,14 @@
         items.forEach(effect => {
             const isFav = favorites.includes(effect.command) ? "is-fav" : "";
             const folder = effect.cat === "farts" ? "farts" : "sounds";
-            const audioId = `audio-${effect.command.replace(/!/g, '')}`;
 
             container.innerHTML += `
                 <div class="item">
                     <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
+                    <img src="images/${effect.img}">
                     
-                    <div class="img-container" onclick="playPreview('${audioId}')" oncontextmenu="return false;">
-                        <img src="images/${effect.img}">
-                        <div class="play-overlay">
-                            <span class="play-icon">▶</span>
-                        </div>
-                    </div>
-
                     ${effect.media_file ? `
-                        <audio id="${audioId}" class="hidden-audio" controlsList="nodownload" oncontextmenu="return false;">
+                        <audio controls controlsList="nodownload" oncontextmenu="return false;">
                             <source src="${folder}/${effect.media_file}" type="audio/mpeg">
                         </audio>
                     ` : ''}
