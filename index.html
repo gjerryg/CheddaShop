@@ -454,9 +454,12 @@
 
     function playPreview(id) {
         const audio = document.getElementById(id);
-        if (!audio) return;
-        stopAllAudio();
-        audio.play();
+        if (!audio) {
+            console.error("Audio file not found for ID:", id);
+            return;
+        }
+        stopAllAudio(); // This stops any currently playing farts
+        audio.play().catch(e => console.error("Playback failed:", e));
     }
 
     function processShop() {
@@ -487,8 +490,8 @@
                     <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
                     
                     <div class="img-container" onclick="playPreview('${audioId}')" oncontextmenu="return false;">
-                        <img src="images/${effect.img}">
-                        <div class="play-overlay">
+                        <img src="images/${effect.img}" style="pointer-events: none;">
+                        <div class="play-overlay" style="pointer-events: none;">
                             <span class="play-icon">▶</span>
                         </div>
                     </div>
@@ -498,6 +501,13 @@
                             <source src="${folder}/${effect.media_file}" type="audio/mpeg">
                         </audio>
                     ` : ''}
+
+                    <h3>${effect.name}</h3>
+                    <div class="command-hint">${effect.command}</div>
+                    <p class="coin">${effect.price} Coins</p>
+                    <button class="copy-btn" onclick="copyCommand(this, '${effect.command}')">Copy Command</button>
+                </div>
+            `;
 
                     <h3>${effect.name}</h3>
                     <div class="command-hint">${effect.command}</div>
