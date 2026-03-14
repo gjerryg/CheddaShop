@@ -37,7 +37,6 @@
             margin: 0 auto;
         }
 
-        /* TAB STYLING */
         .tabs {
             display: flex;
             justify-content: center;
@@ -61,6 +60,13 @@
             color: #0bd2f4;
             border-color: #0bd2f4;
             border-bottom: 2px solid #444;
+        }
+
+        /* Styling for when Favorites is active */
+        body.fav-mode .tab-btn {
+            opacity: 0.5;
+            border-color: #444;
+            color: #888;
         }
 
         #searchBar {
@@ -183,11 +189,11 @@
         }
     </style>
 </head>
-<body>
+<body id="mainBody">
 
 <header>
     <div class="controls">
-        <input type="text" id="searchBar" placeholder="Search this tab..." onkeyup="processShop()">
+        <input type="text" id="searchBar" placeholder="Search..." onkeyup="processShop()">
         
         <button id="favToggle" class="control-btn" onclick="toggleFavFilter()">Favorites ⭐</button>
         
@@ -210,7 +216,7 @@
 
 <script>
    const soundEffects = [
-    // ORIGINAL SOUNDS
+    // GENERAL SOUNDS (Simplified for example, keep your full list here)
     { name: "18 Beers", price: 5, img: "18.png", command: "!18", cat: "general" },
     { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna", cat: "general" },
     { name: "AK47", price: 5, img: "ak47.png", command: "!ak47", cat: "general" },
@@ -349,7 +355,7 @@
     { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt", cat: "general" },
     { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt", cat: "general" },
 
-    // FART SOUNDS
+    // FARTS
     { name: "001 Fart - Sonic", price: 2, img: "fart.png", command: "!fartgen01", cat: "farts" },
     { name: "002 Fart - Bite", price: 2, img: "fart.png", command: "!fartgen02", cat: "farts" },
     { name: "003 Fart - Lightsaber", price: 2, img: "fart.png", command: "!fartgen03", cat: "farts" },
@@ -418,46 +424,54 @@
 
     let showFavoritesOnly = false;
     let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
-    let currentTab = 'general'; // Default starting tab
+    let currentTab = 'general'; 
 
     function switchTab(tab) {
         currentTab = tab;
         
+        // Turn OFF the favorites global filter when switching tabs
+        showFavoritesOnly = false;
+        document.getElementById('favToggle').classList.remove('active');
+        document.getElementById('mainBody').classList.remove('fav-mode');
+
         // Update UI styling for buttons
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`tab-${tab}`).classList.add('active');
         
-        // Refresh the items shown
         processShop();
     }
 
-    // MAIN BRAIN: Processes Filtering, Searching, and Sorting based on the ACTIVE TAB
     function processShop() {
         const searchText = document.getElementById('searchBar').value.toLowerCase();
         const sortType = document.getElementById('sortSelect').value;
         const container = document.getElementById('shop-container');
 
-        // 1. FILTERING (Category + Search + Favorites)
+        // FILTER LOGIC
         let items = soundEffects.filter(item => {
-            const matchesTab = item.cat === currentTab;
             const matchesSearch = item.name.toLowerCase().includes(searchText) || 
                                  item.command.toLowerCase().includes(searchText);
-            const matchesFav = showFavoritesOnly ? favorites.includes(item.command) : true;
             
-            return matchesTab && matchesSearch && matchesFav;
+            if (showFavoritesOnly) {
+                // If favorites mode is on, ignore the "cat" and show everything favorited
+                return matchesSearch && favorites.includes(item.command);
+            } else {
+                // Otherwise, respect the active tab
+                return matchesSearch && item.cat === currentTab;
+            }
         });
 
-        // 2. SORTING
+        // SORT LOGIC
         items.sort((a, b) => {
             if (sortType === "az") return a.name.localeCompare(b.name);
             if (sortType === "low") return a.price - b.price;
             if (sortType === "high") return b.price - a.price;
         });
 
-        // 3. DISPLAY
+        // DISPLAY LOGIC
         container.innerHTML = "";
         if (items.length === 0) {
-            container.innerHTML = `<p style='color:#888; margin-top:50px;'>Nothing found in ${currentTab} sounds!</p>`;
+            const msg = showFavoritesOnly ? "You haven't favorited anything yet!" : `Nothing found in ${currentTab}!`;
+            container.innerHTML = `<p style='color:#888; margin-top:50px;'>${msg}</p>`;
             return;
         }
 
@@ -489,6 +503,7 @@
     function toggleFavFilter() {
         showFavoritesOnly = !showFavoritesOnly;
         document.getElementById('favToggle').classList.toggle('active');
+        document.getElementById('mainBody').classList.toggle('fav-mode');
         processShop();
     }
 
