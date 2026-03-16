@@ -197,7 +197,7 @@
 
 <script>
    const soundEffects = [
-    // --- SOUNDBOARD (Path: soundboard/) ---
+    // --- SOUNDBOARD ---
     { name: "18 Beers", price: 5, img: "18.png", command: "!18", cat: "general", media_file: "18_Beers.mp3" },
     { name: "Chinese Meal", price: 5, img: "chinese.png", command: "!chinese", cat: "general", media_file: "a succulent chinese meal.mp3" },
     { name: "AK47", price: 5, img: "ak47.png", command: "!ak47", cat: "general", media_file: "ak47-1.mp3" },
@@ -353,7 +353,7 @@
     { name: "Merill - So Good!", price: 5, img: "merill.png", command: "!merillhoward04", cat: "general", media_file: "Merill Howard 4.mp3" },
     { name: "Spongebob", price: 10, img: "spongebobdrain.png", command: "!spongebobdrain", cat: "general", media_file: "Spongebob Drain.mp3" },
 
-    // --- FARTS CLASSIC (Path: farts/) ---
+    // --- FARTS CLASSIC ---
     { name: "001 Fart - Sonic", price: 2, img: "fart.png", command: "!fartgen01", cat: "farts", sub: "classic", media_file: "001 Fart - Sonic.mp3" },
     { name: "002 Fart - Bite", price: 2, img: "fart.png", command: "!fartgen02", cat: "farts", sub: "classic", media_file: "002 Fart - Bite.mp3" },
     { name: "003 Fart - Lightsaber", price: 2, img: "fart.png", command: "!fartgen03", cat: "farts", sub: "classic", media_file: "003 Fart - Lightsaber.mp3" },
@@ -419,7 +419,7 @@
     { name: "063 Fart", price: 2, img: "fart.png", command: "!fartgen63", cat: "farts", sub: "classic", media_file: "063 Fart.mp3" },
     { name: "064 Fart", price: 2, img: "fart.png", command: "!fartgen64", cat: "farts", sub: "classic", media_file: "064 Fart.mp3" },
 
-    // --- FARTS SWEARING (Path: farts/) ---
+    // --- FARTS SWEARING ---
     { name: "Fart - Shut the fuck up", price: 2, img: "swearingfart.png", command: "!fartgen65", cat: "farts", sub: "swearing", media_file: "Fart - Shut the fuck up.mp3" },
     { name: "Fart - You Bitch", price: 2, img: "swearingfart.png", command: "!fartgen66", cat: "farts", sub: "swearing", media_file: "Fart - You Bitch.mp3" },
     { name: "Fart - FUCK", price: 2, img: "swearingfart.png", command: "!fartgen67", cat: "farts", sub: "swearing", media_file: "Fart - FUCK.mp3" },
@@ -438,7 +438,7 @@
     { name: "Fart - Fucker", price: 2, img: "swearingfart.png", command: "!fartgen80", cat: "farts", sub: "swearing", media_file: "Fart - Fucker.mp3" },
     { name: "Fart - Stabbed", price: 2, img: "swearingfart.png", command: "!fartgen81", cat: "farts", sub: "swearing", media_file: "Fart - Stabbed.mp3" },
 
-    // --- VISUAL REDEEMS (Path: webm/) ---
+    // --- VISUAL REDEEMS ---
     { name: "Air out Jeans", price: 15, img: "airoutjeans.png", command: "!airoutdemjeans", cat: "webm", media_file: "Jeans Air Them Out.webm" },
     { name: "Ricky - CheggDeo", price: 10, img: "ricky.png", command: "!rickychegg", cat: "webm", media_file: "Ricky Chegg.webm" },
     { name: "Bam - Barkbark", price: 15, img: "margera.png", command: "!jumblebarkbark", cat: "webm", media_file: "Bam Margera.webm" },
@@ -467,6 +467,17 @@
     let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
     let currentTab = 'general';
     let currentSubTab = 'classic';
+
+    // Added: Stop other media when a new one plays
+    document.addEventListener('play', function(e){
+        var auditors = document.querySelectorAll('audio, video');
+        for(var i = 0, len = auditors.length; i < len;i++){
+            if(auditors[i] != e.target){
+                auditors[i].pause();
+                auditors[i].currentTime = 0;
+            }
+        }
+    }, true);
 
     function switchTab(tab) {
         currentTab = tab;
@@ -538,16 +549,17 @@
             let folder = (effect.cat === "farts") ? "farts" : (effect.cat === "webm" ? "webm" : "soundboard");
             
             let mediaHTML = "";
+            // FIX: Changed preload="metadata" to preload="none" to prevent site lag/stalling
             if (effect.cat === "webm") {
-                mediaHTML = `<video controls src="${folder}/${effect.media_file}" preload="metadata"></video>`;
+                mediaHTML = `<video controls src="${folder}/${effect.media_file}" preload="none"></video>`;
             } else {
-                mediaHTML = `<audio controls src="${folder}/${effect.media_file}" preload="metadata"></audio>`;
+                mediaHTML = `<audio controls src="${folder}/${effect.media_file}" preload="none"></audio>`;
             }
 
             container.innerHTML += `
                 <div class="item">
                     <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
-                    <img src="images/${effect.img}" onerror="this.src='images/default.png'">
+                    <img src="images/${effect.img}" loading="lazy" onerror="this.src='images/default.png'">
                     <h3>${effect.name}</h3>
                     <div style="color:#0bd2f4; margin-bottom:10px;">${effect.price} Coins</div>
                     <button class="copy-btn" onclick="copyToClipboard(this, '${effect.command}')">COPY COMMAND</button>
