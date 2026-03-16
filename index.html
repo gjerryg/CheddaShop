@@ -2,7 +2,6 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
-    
     <style>
         header {
             position: sticky;
@@ -47,7 +46,7 @@
             background-color: #333;
             color: #888;
             border: 2px solid #444;
-            padding: 10px 25px;
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 8px 8px 0 0;
             font-family: 'Bungee', cursive;
@@ -62,9 +61,9 @@
 
         #searchBar {
             padding: 12px;
-            width: 250px;
+            width: 220px;
             font-family: 'Bungee', cursive;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 10px;
             border: 2px solid #333;
             background: #222;
@@ -79,14 +78,9 @@
             cursor: pointer;
             border-radius: 8px;
             font-family: 'Bungee', cursive;
-            transition: 0.2s;
         }
 
-        #favToggle.active {
-            background-color: #ffcf40;
-            color: #000;
-            border-color: #ffcf40;
-        }
+        #favToggle.active { background-color: #ffcf40; color: #000; border-color: #ffcf40; }
 
         .shop {
             display: flex;
@@ -103,17 +97,12 @@
             width: 220px;
             border: 2px solid #333;
             position: relative;
-            /* CONTENT VISIBILITY: This stops the browser from lagging on long lists */
             content-visibility: auto;
-            contain-intrinsic-size: 220px 400px;
+            contain-intrinsic-size: 220px 450px;
         }
 
-        .item:hover {
-            transform: scale(1.02);
-            border-color: #0bd2f4;
-        }
+        .item:hover { transform: scale(1.02); border-color: #0bd2f4; }
 
-        /* THE STAR FIX: Webkit Stroke for outline, Solid for active */
         .fav-btn {
             position: absolute;
             top: 15px;
@@ -128,14 +117,11 @@
             line-height: 1;
         }
 
-        .fav-btn.is-fav {
-            color: #ffcf40;
-            -webkit-text-stroke: 0px;
-        }
+        .fav-btn.is-fav { color: #ffcf40; -webkit-text-stroke: 0px; }
 
         .item img {
             width: 100%;
-            height: 150px;
+            height: 140px;
             object-fit: contain; 
             border-radius: 10px;
             background: #000;
@@ -156,16 +142,17 @@
             margin-bottom: 10px;
         }
         
-        audio { width: 100%; height: 30px; }
+        audio, video { width: 100%; border-radius: 5px; background: #000; }
+        video { height: 120px; }
     </style>
 </head>
-<body id="mainBody">
+<body>
 
 <header>
     <div class="controls">
         <input type="text" id="searchBar" placeholder="Search..." onkeyup="processShop()">
         <button id="favToggle" class="control-btn" onclick="toggleFavFilter()">Favorites ⭐</button>
-        <button id="stopBtn" class="control-btn" style="background:#ff4b4b" onclick="stopAllAudio()">STOP ALL 🔇</button>
+        <button id="stopBtn" class="control-btn" style="background:#ff4b4b" onclick="stopAllMedia()">STOP ALL 🔇</button>
         <select id="sortSelect" onchange="processShop()">
             <option value="az">A-Z Sort</option>
             <option value="low">Price: Low-High</option>
@@ -179,6 +166,7 @@
 <div class="tabs">
     <button id="tab-general" class="tab-btn active" onclick="switchTab('general')">Soundboard</button>
     <button id="tab-farts" class="tab-btn" onclick="switchTab('farts')">Farts</button>
+    <button id="tab-webm" class="tab-btn" onclick="switchTab('webm')">Visual</button>
 </div>
 
 <div id="sub-tabs" class="tabs" style="display:none; margin-top:-10px;">
@@ -190,7 +178,7 @@
 
 <script>
    const soundEffects = [
-    // GENERAL SOUNDS
+    // --- GENERAL SOUNDS ---
     { name: "Sriracha", price: 5, img: "sriracha.png", command: "!sriracha", cat: "general" },
     { name: "Smash Bros Gasp", price: 5, img: "gasp.png", command: "!gasp", cat: "general" },
     { name: "Italian - Bang", price: 5, img: "italian.png", command: "!italian01", cat: "general" },
@@ -345,7 +333,7 @@
     { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt", cat: "general" },
     { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt", cat: "general" },
 
-    // CLASSIC FARTS
+    // --- CLASSIC FARTS ---
     { name: "001 Fart - Sonic", price: 2, img: "fart.png", command: "!fartgen01", cat: "farts", sub: "classic", media_file: "001 Fart - Sonic.mp3" },
     { name: "002 Fart - Bite", price: 2, img: "fart.png", command: "!fartgen02", cat: "farts", sub: "classic", media_file: "002 Fart - Bite.mp3" },
     { name: "003 Fart - Lightsaber", price: 2, img: "fart.png", command: "!fartgen03", cat: "farts", sub: "classic", media_file: "003 Fart - Lightsaber.mp3" },
@@ -411,8 +399,48 @@
     { name: "063 Fart", price: 2, img: "fart.png", command: "!fartgen63", cat: "farts", sub: "classic", media_file: "063 Fart .mp3" },
     { name: "064 Fart", price: 2, img: "fart.png", command: "!fartgen64", cat: "farts", sub: "classic", media_file: "064 Fart .mp3" },
 
-    // SWEARING FARTS
-    { name: "Fart - Shut the fuck up", price: 2, img: "swearingfart.png", command: "!fartgen65", cat: "farts", sub: "swearing", media_file: "Fart - Shut the fuck up.mp3" }
+    // --- SWEARING FARTS ---
+    { name: "Fart - Shut the fuck up", price: 2, img: "swearingfart.png", command: "!fartgen65", cat: "farts", sub: "swearing", media_file: "Fart - Shut the fuck up.mp3" },
+    { name: "Fart - You Bitch", price: 2, img: "swearingfart.png", command: "!fartgen66", cat: "farts", sub: "swearing", media_file: "Fart - You Bitch.mp3" },
+    { name: "Fart - FUCK", price: 2, img: "swearingfart.png", command: "!fartgen67", cat: "farts", sub: "swearing", media_file: "Fart - FUCK.mp3" },
+    { name: "Fart - SUP BITCH", price: 2, img: "swearingfart.png", command: "!fartgen68", cat: "farts", sub: "swearing", media_file: "Fart - SUP BITCH.mp3" },
+    { name: "Fart - Oh fuckkkkk", price: 2, img: "swearingfart.png", command: "!fartgen69", cat: "farts", sub: "swearing", media_file: "Fart - Oh fuckkkkk.mp3" },
+    { name: "Fart - Fucken Bitch", price: 2, img: "swearingfart.png", command: "!fartgen70", cat: "farts", sub: "swearing", media_file: "Fart - Fucken Bitch.mp3" },
+    { name: "Fart - SHIT", price: 2, img: "swearingfart.png", command: "!fartgen71", cat: "farts", sub: "swearing", media_file: "Fart - SHIT.mp3" },
+    { name: "Fart - Talk some shit", price: 2, img: "swearingfart.png", command: "!fartgen72", cat: "farts", sub: "swearing", media_file: "Fart - Talk some shit.mp3" },
+    { name: "Fart - AWW FUCK", price: 2, img: "swearingfart.png", command: "!fartgen73", cat: "farts", sub: "swearing", media_file: "Fart - AWW FUCK.mp3" },
+    { name: "Fart - Smell", price: 2, img: "swearingfart.png", command: "!fartgen74", cat: "farts", sub: "swearing", media_file: "Fart - Smell.mp3" },
+    { name: "Fart - OH SHIT", price: 2, img: "swearingfart.png", command: "!fartgen75", cat: "farts", sub: "swearing", media_file: "Fart - OH SHIT.mp3" },
+    { name: "Fart - DA FUQ", price: 2, img: "swearingfart.png", command: "!fartgen76", cat: "farts", sub: "swearing", media_file: "Fart - DA FUQ.mp3" },
+    { name: "Fart - BITCH", price: 2, img: "swearingfart.png", command: "!fartgen77", cat: "farts", sub: "swearing", media_file: "Fart - BITCH.mp3" },
+    { name: "Fart - Shit Bitch", price: 2, img: "swearingfart.png", command: "!fartgen78", cat: "farts", sub: "swearing", media_file: "Fart - Shit Bitch.mp3" },
+    { name: "Fart - Such a bitch", price: 2, img: "swearingfart.png", command: "!fartgen79", cat: "farts", sub: "swearing", media_file: "Fart - Such a bitch.mp3" },
+    { name: "Fart - Fucker", price: 2, img: "swearingfart.png", command: "!fartgen80", cat: "farts", sub: "swearing", media_file: "Fart - Fucker.mp3" },
+    { name: "Fart - Stabbed", price: 2, img: "swearingfart.png", command: "!fartgen81", cat: "farts", sub: "swearing", media_file: "Fart - Stabbed.mp3" },
+
+    // --- VISUAL REDEEMS ---
+    { name: "Air out dem Jeans", price: 15, img: "airoutjeans.png", command: "!airoutdemjeans", cat: "webm", media_file: "Jeans Air Them Out.webm" },
+    { name: "Ricky Berwick - CheggDeo", price: 10, img: "ricky.png", command: "!rickychegg", cat: "webm", media_file: "Ricky Chegg.webm" },
+    { name: "Bam Margera - Jumble & Barkbark", price: 15, img: "margera.png", command: "!jumblebarkbark", cat: "webm", media_file: "Bam Margera.webm" },
+    { name: "1337", price: 10, img: "1337.png", command: "!leet", cat: "webm", media_file: "1337Bitch.webm" },
+    { name: "Unforgivable - Jackin' Me Off", price: 10, img: "unforgivable.png", command: "!unforgivable04", cat: "webm", media_file: "Unforgivable.webm" },
+    { name: "Tight - BOX 01", price: 10, img: "bradshaw.png", command: "!tight01", cat: "webm", media_file: "Seth Bradshaw_BOX_01.webm" },
+    { name: "Tight - BOX 02", price: 10, img: "bradshaw.png", command: "!tight02", cat: "webm", media_file: "Seth Bradshaw_BOX_02.webm" },
+    { name: "Tight - COOL 01", price: 10, img: "bradshaw.png", command: "!tight03", cat: "webm", media_file: "Seth Bradshaw_COOL.webm" },
+    { name: "Tight - COOL 02", price: 10, img: "bradshaw.png", command: "!tight04", cat: "webm", media_file: "Seth Bradshaw_COOL 02.webm" },
+    { name: "Tight - Helmet", price: 10, img: "bradshaw.png", command: "!tight05", cat: "webm", media_file: "Seth Bradshaw_Helmet.webm" },
+    { name: "Tight - NO", price: 10, img: "bradshaw.png", command: "!tight06", cat: "webm", media_file: "Seth Bradshaw_NO.webm" },
+    { name: "Tight - Skate", price: 10, img: "bradshaw.png", command: "!tight07", cat: "webm", media_file: "Seth Bradshaw_SKATE.webm" },
+    { name: "Tight - STOP", price: 10, img: "bradshaw.png", command: "!tight08", cat: "webm", media_file: "Seth Bradshaw_STOP.webm" },
+    { name: "Tight - Tard", price: 10, img: "bradshaw.png", command: "!tight09", cat: "webm", media_file: "Seth Bradshaw_Tard.webm" },
+    { name: "Tight - Awesome", price: 10, img: "bradshaw.png", command: "!tight10", cat: "webm", media_file: "Seth Bradshaw_ThatsAwesome.webm" },
+    { name: "Raiden", price: 10, img: "raiden.png", command: "!raiden", cat: "webm", media_file: "Raiden.webm" },
+    { name: "Dennis Quaid", price: 15, img: "dennis.png", command: "!dennisquaid", cat: "webm", media_file: "Dennis Quaid2.webm" },
+    { name: "Ray Liotta", price: 10, img: "ray.png", command: "!rayliotta", cat: "webm", media_file: "Ray_Liotta.webm" },
+    { name: "Tiffany", price: 15, img: "bigtiff.png", command: "!bigtiff", cat: "webm", media_file: "Tiffany_1.webm" },
+    { name: "BigDik", price: 10, img: "bigdik.png", command: "!bigdik", cat: "webm", media_file: "BigDik2.webm" },
+    { name: "Fester's Quest", price: 10, img: "fester.png", command: "!fester", cat: "webm", media_file: "Festers Quest2.webm" },
+    { name: "French Champagne", price: 10, img: "orsonwells.png", command: "!orsonwells", cat: "webm", media_file: "Orson Wells2.webm" }
    ];
 
     let showFavoritesOnly = false;
@@ -426,10 +454,7 @@
         document.getElementById('favToggle').classList.remove('active');
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`tab-${tab}`).classList.add('active');
-        
-        // Show sub tabs only for farts
         document.getElementById('sub-tabs').style.display = (tab === 'farts') ? 'flex' : 'none';
-        
         processShop();
     }
 
@@ -456,8 +481,8 @@
         processShop();
     }
 
-    function stopAllAudio() {
-        document.querySelectorAll('audio').forEach(s => { s.pause(); s.currentTime = 0; });
+    function stopAllMedia() {
+        document.querySelectorAll('audio, video').forEach(m => { m.pause(); m.currentTime = 0; });
     }
 
     function processShop() {
@@ -468,11 +493,8 @@
         let items = soundEffects.filter(item => {
             const matchesSearch = item.name.toLowerCase().includes(searchText) || item.command.toLowerCase().includes(searchText);
             if (showFavoritesOnly) return matchesSearch && favorites.includes(item.command);
-            
             const matchesTab = item.cat === currentTab;
-            if (currentTab === 'farts') {
-                return matchesSearch && matchesTab && item.sub === currentSubTab;
-            }
+            if (currentTab === 'farts') return matchesSearch && matchesTab && item.sub === currentSubTab;
             return matchesSearch && matchesTab;
         });
 
@@ -485,9 +507,16 @@
         container.innerHTML = "";
         items.forEach(effect => {
             const isFav = favorites.includes(effect.command) ? "is-fav" : "";
-            const folder = effect.cat === "farts" ? "farts" : "sounds";
-            const mediaHTML = effect.media_file ? 
-                `<audio controls src="${folder}/${effect.media_file}" preload="none"></audio>` : "";
+            let mediaHTML = "";
+            
+            if (effect.media_file) {
+                if (effect.cat === "webm") {
+                    mediaHTML = `<video controls src="webm/${effect.media_file}" preload="none"></video>`;
+                } else {
+                    const folder = (effect.cat === "farts") ? "farts" : "sounds";
+                    mediaHTML = `<audio controls src="${folder}/${effect.media_file}" preload="none"></audio>`;
+                }
+            }
 
             container.innerHTML += `
                 <div class="item">
@@ -501,9 +530,7 @@
             `;
         });
     }
-
     processShop();
 </script>
-
 </body>
 </html>
