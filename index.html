@@ -61,6 +61,12 @@
             border-bottom: 2px solid #444;
         }
 
+        #sub-tab-container .tab-btn {
+            font-size: 12px;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
         body.fav-mode .tab-btn {
             opacity: 0.5;
             border-color: #444;
@@ -212,15 +218,22 @@
 <h1><span class="chedda">Chedda</span><span class="coin">Coin</span> Shop</h1>
 
 <div class="tabs">
+    <button id="tab-all" class="tab-btn" onclick="switchTab('all')">All Items</button>
     <button id="tab-general" class="tab-btn active" onclick="switchTab('general')">Soundboard</button>
     <button id="tab-farts" class="tab-btn" onclick="switchTab('farts')">Farts</button>
+</div>
+
+<div id="sub-tab-container" class="tabs" style="display: none; margin-top: -10px;">
+    <button id="sub-all" class="tab-btn active" onclick="switchSubTab('all')">All Farts</button>
+    <button id="sub-classic" class="tab-btn" onclick="switchSubTab('classic')">Classic</button>
+    <button id="sub-swearing" class="tab-btn" onclick="switchSubTab('swearing')">Swearing</button>
 </div>
 
 <div id="shop-container" class="shop"></div>
 
 <script>
    const soundEffects = [
-    // NEW SOUNDS ADDED
+    // SOUNDBOARD CATEGORY
     { name: "Sriracha", price: 5, img: "sriracha.png", command: "!sriracha", cat: "general" },
     { name: "Smash Bros Gasp", price: 5, img: "gasp.png", command: "!gasp", cat: "general" },
     { name: "Italian - Bang", price: 5, img: "italian.png", command: "!italian01", cat: "general" },
@@ -239,8 +252,6 @@
     { name: "Merill - THIS IS WONDERFUL", price: 5, img: "merill.png", command: "!merillhoward02", cat: "general" },
     { name: "Merill - CH1KN", price: 5, img: "merill.png", command: "!merillhoward03", cat: "general" },
     { name: "Merill - So Good!", price: 5, img: "merill.png", command: "!merillhoward04", cat: "general" },
-
-    // PREVIOUS SOUNDS
     { name: "18 Beers", price: 5, img: "18.png", command: "!18", cat: "general" },
     { name: "Adam Sandler", price: 5, img: "adam.png", command: "!holyshitimgonna", cat: "general" },
     { name: "AK47", price: 5, img: "ak47.png", command: "!ak47", cat: "general" },
@@ -377,91 +388,151 @@
     { name: "Look at all that YOGURT!", price: 5, img: "yogurt.png", command: "!spilledyogurt", cat: "general" },
     { name: "Yogurt", price: 10, img: "yogurt02.png", command: "!yogurt", cat: "general" },
 
-    // FARTS (All 64 included with media_file)
-    // FARTS (Updated with spaces for 005-064 to match your files)
-    { name: "001 Fart - Sonic", price: 2, img: "fart.png", command: "!fartgen01", cat: "farts", media_file: "001 Fart - Sonic.mp3" },
-    { name: "002 Fart - Bite", price: 2, img: "fart.png", command: "!fartgen02", cat: "farts", media_file: "002 Fart - Bite.mp3" },
-    { name: "003 Fart - Lightsaber", price: 2, img: "fart.png", command: "!fartgen03", cat: "farts", media_file: "003 Fart - Lightsaber.mp3" },
-    { name: "004 Fart - Bass", price: 2, img: "fart.png", command: "!fartgen04", cat: "farts", media_file: "004 Fart - Bass.mp3" },
-    { name: "005 Fart", price: 2, img: "fart.png", command: "!fartgen05", cat: "farts", media_file: "005 Fart .mp3" },
-    { name: "006 Fart", price: 2, img: "fart.png", command: "!fartgen06", cat: "farts", media_file: "006 Fart .mp3" },
-    { name: "007 Fart", price: 2, img: "fart.png", command: "!fartgen07", cat: "farts", media_file: "007 Fart .mp3" },
-    { name: "008 Fart", price: 2, img: "fart.png", command: "!fartgen08", cat: "farts", media_file: "008 Fart .mp3" },
-    { name: "009 Fart", price: 2, img: "fart.png", command: "!fartgen09", cat: "farts", media_file: "009 Fart .mp3" },
-    { name: "010 Fart", price: 2, img: "fart.png", command: "!fartgen10", cat: "farts", media_file: "010 Fart .mp3" },
-    { name: "011 Fart", price: 2, img: "fart.png", command: "!fartgen11", cat: "farts", media_file: "011 Fart .mp3" },
-    { name: "012 Fart", price: 2, img: "fart.png", command: "!fartgen12", cat: "farts", media_file: "012 Fart .mp3" },
-    { name: "013 Fart", price: 2, img: "fart.png", command: "!fartgen13", cat: "farts", media_file: "013 Fart .mp3" },
-    { name: "014 Fart", price: 2, img: "fart.png", command: "!fartgen14", cat: "farts", media_file: "014 Fart .mp3" },
-    { name: "015 Fart", price: 2, img: "fart.png", command: "!fartgen15", cat: "farts", media_file: "015 Fart .mp3" },
-    { name: "016 Fart", price: 2, img: "fart.png", command: "!fartgen16", cat: "farts", media_file: "016 Fart .mp3" },
-    { name: "017 Fart", price: 2, img: "fart.png", command: "!fartgen17", cat: "farts", media_file: "017 Fart .mp3" },
-    { name: "018 Fart", price: 2, img: "fart.png", command: "!fartgen18", cat: "farts", media_file: "018 Fart .mp3" },
-    { name: "019 Fart", price: 2, img: "fart.png", command: "!fartgen19", cat: "farts", media_file: "019 Fart .mp3" },
-    { name: "020 Fart", price: 2, img: "fart.png", command: "!fartgen20", cat: "farts", media_file: "020 Fart .mp3" },
-    { name: "021 Fart", price: 2, img: "fart.png", command: "!fartgen21", cat: "farts", media_file: "021 Fart .mp3" },
-    { name: "022 Fart", price: 2, img: "fart.png", command: "!fartgen22", cat: "farts", media_file: "022 Fart .mp3" },
-    { name: "023 Fart", price: 2, img: "fart.png", command: "!fartgen23", cat: "farts", media_file: "023 Fart .mp3" },
-    { name: "024 Fart", price: 2, img: "fart.png", command: "!fartgen24", cat: "farts", media_file: "024 Fart .mp3" },
-    { name: "025 Fart", price: 2, img: "fart.png", command: "!fartgen25", cat: "farts", media_file: "025 Fart .mp3" },
-    { name: "026 Fart", price: 2, img: "fart.png", command: "!fartgen26", cat: "farts", media_file: "026 Fart .mp3" },
-    { name: "027 Fart", price: 2, img: "fart.png", command: "!fartgen27", cat: "farts", media_file: "027 Fart .mp3" },
-    { name: "028 Fart", price: 2, img: "fart.png", command: "!fartgen28", cat: "farts", media_file: "028 Fart .mp3" },
-    { name: "029 Fart", price: 2, img: "fart.png", command: "!fartgen29", cat: "farts", media_file: "029 Fart .mp3" },
-    { name: "030 Fart", price: 2, img: "fart.png", command: "!fartgen30", cat: "farts", media_file: "030 Fart .mp3" },
-    { name: "031 Fart", price: 2, img: "fart.png", command: "!fartgen31", cat: "farts", media_file: "031 Fart .mp3" },
-    { name: "032 Fart", price: 2, img: "fart.png", command: "!fartgen32", cat: "farts", media_file: "032 Fart .mp3" },
-    { name: "033 Fart", price: 2, img: "fart.png", command: "!fartgen33", cat: "farts", media_file: "033 Fart .mp3" },
-    { name: "034 Fart", price: 2, img: "fart.png", command: "!fartgen34", cat: "farts", media_file: "034 Fart .mp3" },
-    { name: "035 Fart", price: 2, img: "fart.png", command: "!fartgen35", cat: "farts", media_file: "035 Fart .mp3" },
-    { name: "036 Fart", price: 2, img: "fart.png", command: "!fartgen36", cat: "farts", media_file: "036 Fart .mp3" },
-    { name: "037 Fart", price: 2, img: "fart.png", command: "!fartgen37", cat: "farts", media_file: "037 Fart .mp3" },
-    { name: "038 Fart", price: 2, img: "fart.png", command: "!fartgen38", cat: "farts", media_file: "038 Fart .mp3" },
-    { name: "039 Fart", price: 2, img: "fart.png", command: "!fartgen39", cat: "farts", media_file: "039 Fart .mp3" },
-    { name: "040 Fart", price: 2, img: "fart.png", command: "!fartgen40", cat: "farts", media_file: "040 Fart .mp3" },
-    { name: "041 Fart", price: 2, img: "fart.png", command: "!fartgen41", cat: "farts", media_file: "041 Fart .mp3" },
-    { name: "042 Fart", price: 2, img: "fart.png", command: "!fartgen42", cat: "farts", media_file: "042 Fart .mp3" },
-    { name: "043 Fart", price: 2, img: "fart.png", command: "!fartgen43", cat: "farts", media_file: "043 Fart .mp3" },
-    { name: "044 Fart", price: 2, img: "fart.png", command: "!fartgen44", cat: "farts", media_file: "044 Fart .mp3" },
-    { name: "045 Fart", price: 2, img: "fart.png", command: "!fartgen45", cat: "farts", media_file: "045 Fart .mp3" },
-    { name: "046 Fart", price: 2, img: "fart.png", command: "!fartgen46", cat: "farts", media_file: "046 Fart .mp3" },
-    { name: "047 Fart", price: 2, img: "fart.png", command: "!fartgen47", cat: "farts", media_file: "047 Fart .mp3" },
-    { name: "048 Fart", price: 2, img: "fart.png", command: "!fartgen48", cat: "farts", media_file: "048 Fart .mp3" },
-    { name: "049 Fart", price: 2, img: "fart.png", command: "!fartgen49", cat: "farts", media_file: "049 Fart .mp3" },
-    { name: "050 Fart", price: 2, img: "fart.png", command: "!fartgen50", cat: "farts", media_file: "050 Fart .mp3" },
-    { name: "051 Fart", price: 2, img: "fart.png", command: "!fartgen51", cat: "farts", media_file: "051 Fart .mp3" },
-    { name: "052 Fart", price: 2, img: "fart.png", command: "!fartgen52", cat: "farts", media_file: "052 Fart .mp3" },
-    { name: "053 Fart", price: 2, img: "fart.png", command: "!fartgen53", cat: "farts", media_file: "053 Fart .mp3" },
-    { name: "054 Fart", price: 2, img: "fart.png", command: "!fartgen54", cat: "farts", media_file: "054 Fart .mp3" },
-    { name: "055 Fart", price: 2, img: "fart.png", command: "!fartgen55", cat: "farts", media_file: "055 Fart .mp3" },
-    { name: "056 Fart", price: 2, img: "fart.png", command: "!fartgen56", cat: "farts", media_file: "056 Fart .mp3" },
-    { name: "057 Fart", price: 2, img: "fart.png", command: "!fartgen57", cat: "farts", media_file: "057 Fart .mp3" },
-    { name: "058 Fart", price: 2, img: "fart.png", command: "!fartgen58", cat: "farts", media_file: "058 Fart .mp3" },
-    { name: "059 Fart", price: 2, img: "fart.png", command: "!fartgen59", cat: "farts", media_file: "059 Fart .mp3" },
-    { name: "060 Fart", price: 2, img: "fart.png", command: "!fartgen60", cat: "farts", media_file: "060 Fart .mp3" },
-    { name: "061 Fart", price: 2, img: "fart.png", command: "!fartgen61", cat: "farts", media_file: "061 Fart .mp3" },
-    { name: "062 Fart", price: 2, img: "fart.png", command: "!fartgen62", cat: "farts", media_file: "062 Fart .mp3" },
-    { name: "063 Fart", price: 2, img: "fart.png", command: "!fartgen63", cat: "farts", media_file: "063 Fart .mp3" },
-    { name: "064 Fart", price: 2, img: "fart.png", command: "!fartgen64", cat: "farts", media_file: "064 Fart .mp3" }
+    // CLASSIC FARTS (sub: classic)
+    { name: "001 Fart - Sonic", price: 2, img: "fart.png", command: "!fartgen01", cat: "farts", sub: "classic", media_file: "001 Fart - Sonic.mp3" },
+    { name: "002 Fart - Bite", price: 2, img: "fart.png", command: "!fartgen02", cat: "farts", sub: "classic", media_file: "002 Fart - Bite.mp3" },
+    { name: "003 Fart - Lightsaber", price: 2, img: "fart.png", command: "!fartgen03", cat: "farts", sub: "classic", media_file: "003 Fart - Lightsaber.mp3" },
+    { name: "004 Fart - Bass", price: 2, img: "fart.png", command: "!fartgen04", cat: "farts", sub: "classic", media_file: "004 Fart - Bass.mp3" },
+    { name: "005 Fart", price: 2, img: "fart.png", command: "!fartgen05", cat: "farts", sub: "classic", media_file: "005 Fart .mp3" },
+    { name: "006 Fart", price: 2, img: "fart.png", command: "!fartgen06", cat: "farts", sub: "classic", media_file: "006 Fart .mp3" },
+    { name: "007 Fart", price: 2, img: "fart.png", command: "!fartgen07", cat: "farts", sub: "classic", media_file: "007 Fart .mp3" },
+    { name: "008 Fart", price: 2, img: "fart.png", command: "!fartgen08", cat: "farts", sub: "classic", media_file: "008 Fart .mp3" },
+    { name: "009 Fart", price: 2, img: "fart.png", command: "!fartgen09", cat: "farts", sub: "classic", media_file: "009 Fart .mp3" },
+    { name: "010 Fart", price: 2, img: "fart.png", command: "!fartgen10", cat: "farts", sub: "classic", media_file: "010 Fart .mp3" },
+    { name: "011 Fart", price: 2, img: "fart.png", command: "!fartgen11", cat: "farts", sub: "classic", media_file: "011 Fart .mp3" },
+    { name: "012 Fart", price: 2, img: "fart.png", command: "!fartgen12", cat: "farts", sub: "classic", media_file: "012 Fart .mp3" },
+    { name: "013 Fart", price: 2, img: "fart.png", command: "!fartgen13", cat: "farts", sub: "classic", media_file: "013 Fart .mp3" },
+    { name: "014 Fart", price: 2, img: "fart.png", command: "!fartgen14", cat: "farts", sub: "classic", media_file: "014 Fart .mp3" },
+    { name: "015 Fart", price: 2, img: "fart.png", command: "!fartgen15", cat: "farts", sub: "classic", media_file: "015 Fart .mp3" },
+    { name: "016 Fart", price: 2, img: "fart.png", command: "!fartgen16", cat: "farts", sub: "classic", media_file: "016 Fart .mp3" },
+    { name: "017 Fart", price: 2, img: "fart.png", command: "!fartgen17", cat: "farts", sub: "classic", media_file: "017 Fart .mp3" },
+    { name: "018 Fart", price: 2, img: "fart.png", command: "!fartgen18", cat: "farts", sub: "classic", media_file: "018 Fart .mp3" },
+    { name: "019 Fart", price: 2, img: "fart.png", command: "!fartgen19", cat: "farts", sub: "classic", media_file: "019 Fart .mp3" },
+    { name: "020 Fart", price: 2, img: "fart.png", command: "!fartgen20", cat: "farts", sub: "classic", media_file: "020 Fart .mp3" },
+    { name: "021 Fart", price: 2, img: "fart.png", command: "!fartgen21", cat: "farts", sub: "classic", media_file: "021 Fart .mp3" },
+    { name: "022 Fart", price: 2, img: "fart.png", command: "!fartgen22", cat: "farts", sub: "classic", media_file: "022 Fart .mp3" },
+    { name: "023 Fart", price: 2, img: "fart.png", command: "!fartgen23", cat: "farts", sub: "classic", media_file: "023 Fart .mp3" },
+    { name: "024 Fart", price: 2, img: "fart.png", command: "!fartgen24", cat: "farts", sub: "classic", media_file: "024 Fart .mp3" },
+    { name: "025 Fart", price: 2, img: "fart.png", command: "!fartgen25", cat: "farts", sub: "classic", media_file: "025 Fart .mp3" },
+    { name: "026 Fart", price: 2, img: "fart.png", command: "!fartgen26", cat: "farts", sub: "classic", media_file: "026 Fart .mp3" },
+    { name: "027 Fart", price: 2, img: "fart.png", command: "!fartgen27", cat: "farts", sub: "classic", media_file: "027 Fart .mp3" },
+    { name: "028 Fart", price: 2, img: "fart.png", command: "!fartgen28", cat: "farts", sub: "classic", media_file: "028 Fart .mp3" },
+    { name: "029 Fart", price: 2, img: "fart.png", command: "!fartgen29", cat: "farts", sub: "classic", media_file: "029 Fart .mp3" },
+    { name: "030 Fart", price: 2, img: "fart.png", command: "!fartgen30", cat: "farts", sub: "classic", media_file: "030 Fart .mp3" },
+    { name: "031 Fart", price: 2, img: "fart.png", command: "!fartgen31", cat: "farts", sub: "classic", media_file: "031 Fart .mp3" },
+    { name: "032 Fart", price: 2, img: "fart.png", command: "!fartgen32", cat: "farts", sub: "classic", media_file: "032 Fart .mp3" },
+    { name: "033 Fart", price: 2, img: "fart.png", command: "!fartgen33", cat: "farts", sub: "classic", media_file: "033 Fart .mp3" },
+    { name: "034 Fart", price: 2, img: "fart.png", command: "!fartgen34", cat: "farts", sub: "classic", media_file: "034 Fart .mp3" },
+    { name: "035 Fart", price: 2, img: "fart.png", command: "!fartgen35", cat: "farts", sub: "classic", media_file: "035 Fart .mp3" },
+    { name: "036 Fart", price: 2, img: "fart.png", command: "!fartgen36", cat: "farts", sub: "classic", media_file: "036 Fart .mp3" },
+    { name: "037 Fart", price: 2, img: "fart.png", command: "!fartgen37", cat: "farts", sub: "classic", media_file: "037 Fart .mp3" },
+    { name: "038 Fart", price: 2, img: "fart.png", command: "!fartgen38", cat: "farts", sub: "classic", media_file: "038 Fart .mp3" },
+    { name: "039 Fart", price: 2, img: "fart.png", command: "!fartgen39", cat: "farts", sub: "classic", media_file: "039 Fart .mp3" },
+    { name: "040 Fart", price: 2, img: "fart.png", command: "!fartgen40", cat: "farts", sub: "classic", media_file: "040 Fart .mp3" },
+    { name: "041 Fart", price: 2, img: "fart.png", command: "!fartgen41", cat: "farts", sub: "classic", media_file: "041 Fart .mp3" },
+    { name: "042 Fart", price: 2, img: "fart.png", command: "!fartgen42", cat: "farts", sub: "classic", media_file: "042 Fart .mp3" },
+    { name: "043 Fart", price: 2, img: "fart.png", command: "!fartgen43", cat: "farts", sub: "classic", media_file: "043 Fart .mp3" },
+    { name: "044 Fart", price: 2, img: "fart.png", command: "!fartgen44", cat: "farts", sub: "classic", media_file: "044 Fart .mp3" },
+    { name: "045 Fart", price: 2, img: "fart.png", command: "!fartgen45", cat: "farts", sub: "classic", media_file: "045 Fart .mp3" },
+    { name: "046 Fart", price: 2, img: "fart.png", command: "!fartgen46", cat: "farts", sub: "classic", media_file: "046 Fart .mp3" },
+    { name: "047 Fart", price: 2, img: "fart.png", command: "!fartgen47", cat: "farts", sub: "classic", media_file: "047 Fart .mp3" },
+    { name: "048 Fart", price: 2, img: "fart.png", command: "!fartgen48", cat: "farts", sub: "classic", media_file: "048 Fart .mp3" },
+    { name: "049 Fart", price: 2, img: "fart.png", command: "!fartgen49", cat: "farts", sub: "classic", media_file: "049 Fart .mp3" },
+    { name: "050 Fart", price: 2, img: "fart.png", command: "!fartgen50", cat: "farts", sub: "classic", media_file: "050 Fart .mp3" },
+    { name: "051 Fart", price: 2, img: "fart.png", command: "!fartgen51", cat: "farts", sub: "classic", media_file: "051 Fart .mp3" },
+    { name: "052 Fart", price: 2, img: "fart.png", command: "!fartgen52", cat: "farts", sub: "classic", media_file: "052 Fart .mp3" },
+    { name: "053 Fart", price: 2, img: "fart.png", command: "!fartgen53", cat: "farts", sub: "classic", media_file: "053 Fart .mp3" },
+    { name: "054 Fart", price: 2, img: "fart.png", command: "!fartgen54", cat: "farts", sub: "classic", media_file: "054 Fart .mp3" },
+    { name: "055 Fart", price: 2, img: "fart.png", command: "!fartgen55", cat: "farts", sub: "classic", media_file: "055 Fart .mp3" },
+    { name: "056 Fart", price: 2, img: "fart.png", command: "!fartgen56", cat: "farts", sub: "classic", media_file: "056 Fart .mp3" },
+    { name: "057 Fart", price: 2, img: "fart.png", command: "!fartgen57", cat: "farts", sub: "classic", media_file: "057 Fart .mp3" },
+    { name: "058 Fart", price: 2, img: "fart.png", command: "!fartgen58", cat: "farts", sub: "classic", media_file: "058 Fart .mp3" },
+    { name: "059 Fart", price: 2, img: "fart.png", command: "!fartgen59", cat: "farts", sub: "classic", media_file: "059 Fart .mp3" },
+    { name: "060 Fart", price: 2, img: "fart.png", command: "!fartgen60", cat: "farts", sub: "classic", media_file: "060 Fart .mp3" },
+    { name: "061 Fart", price: 2, img: "fart.png", command: "!fartgen61", cat: "farts", sub: "classic", media_file: "061 Fart .mp3" },
+    { name: "062 Fart", price: 2, img: "fart.png", command: "!fartgen62", cat: "farts", sub: "classic", media_file: "062 Fart .mp3" },
+    { name: "063 Fart", price: 2, img: "fart.png", command: "!fartgen63", cat: "farts", sub: "classic", media_file: "063 Fart .mp3" },
+    { name: "064 Fart", price: 2, img: "fart.png", command: "!fartgen64", cat: "farts", sub: "classic", media_file: "064 Fart .mp3" },
+
+    // SWEARING FARTS (sub: swearing)
+    { name: "Fart - Shut the fuck up", price: 2, img: "swearingfart.png", command: "!fartgen65", cat: "farts", sub: "swearing", media_file: "Fart - Shut the fuck up.mp3" },
+    { name: "Fart - You Bitch", price: 2, img: "swearingfart.png", command: "!fartgen66", cat: "farts", sub: "swearing", media_file: "Fart - You Bitch.mp3" },
+    { name: "Fart - FUCK", price: 2, img: "swearingfart.png", command: "!fartgen67", cat: "farts", sub: "swearing", media_file: "Fart - FUCK.mp3" },
+    { name: "Fart - SUP BITCH", price: 2, img: "swearingfart.png", command: "!fartgen68", cat: "farts", sub: "swearing", media_file: "Fart - SUP BITCH.mp3" },
+    { name: "Fart - Oh fuckkkkk", price: 2, img: "swearingfart.png", command: "!fartgen69", cat: "farts", sub: "swearing", media_file: "Fart - Oh fuckkkkk.mp3" },
+    { name: "Fart - Fucken Bitch", price: 2, img: "swearingfart.png", command: "!fartgen70", cat: "farts", sub: "swearing", media_file: "Fart - Fucken Bitch.mp3" },
+    { name: "Fart - SHIT", price: 2, img: "swearingfart.png", command: "!fartgen71", cat: "farts", sub: "swearing", media_file: "Fart - SHIT.mp3" },
+    { name: "Fart - Talk some shit", price: 2, img: "swearingfart.png", command: "!fartgen72", cat: "farts", sub: "swearing", media_file: "Fart - Talk some shit.mp3" },
+    { name: "Fart - AWW FUCK", price: 2, img: "swearingfart.png", command: "!fartgen73", cat: "farts", sub: "swearing", media_file: "Fart - AWW FUCK.mp3" },
+    { name: "Fart - Smell", price: 2, img: "swearingfart.png", command: "!fartgen74", cat: "farts", sub: "swearing", media_file: "Fart - Smell.mp3" },
+    { name: "Fart - OH SHIT", price: 2, img: "swearingfart.png", command: "!fartgen75", cat: "farts", sub: "swearing", media_file: "Fart - OH SHIT.mp3" },
+    { name: "Fart - DA FUQ", price: 2, img: "swearingfart.png", command: "!fartgen76", cat: "farts", sub: "swearing", media_file: "Fart - DA FUQ.mp3" },
+    { name: "Fart - BITCH", price: 2, img: "swearingfart.png", command: "!fartgen77", cat: "farts", sub: "swearing", media_file: "Fart - BITCH.mp3" },
+    { name: "Fart - Shit Bitch", price: 2, img: "swearingfart.png", command: "!fartgen78", cat: "farts", sub: "swearing", media_file: "Fart - Shit Bitch.mp3" },
+    { name: "Fart - Such a bitch", price: 2, img: "swearingfart.png", command: "!fartgen79", cat: "farts", sub: "swearing", media_file: "Fart - Such a bitch.mp3" },
+    { name: "Fart - Fucker", price: 2, img: "swearingfart.png", command: "!fartgen80", cat: "farts", sub: "swearing", media_file: "Fart - Fucker.mp3" },
+    { name: "Fart - Stabbed", price: 2, img: "swearingfart.png", command: "!fartgen81", cat: "farts", sub: "swearing", media_file: "Fart - Stabbed.mp3" }
    ];
 
     let showFavoritesOnly = false;
     let favorites = JSON.parse(localStorage.getItem('cheddaFavs')) || [];
     let currentTab = 'general'; 
+    let currentSubTab = 'all';
 
     function switchTab(tab) {
         currentTab = tab;
+        currentSubTab = 'all'; // Reset sub-filters
         showFavoritesOnly = false;
+
+        // Toggle visibility of the Farts sub-menu
+        const subTabs = document.getElementById('sub-tab-container');
+        subTabs.style.display = (tab === 'farts') ? 'flex' : 'none';
+
+        // Styling for main tabs
         document.getElementById('favToggle').classList.remove('active');
         document.getElementById('mainBody').classList.remove('fav-mode');
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`tab-${tab}`).classList.add('active');
+
+        // Reset sub-tab buttons to "All Farts" active
+        document.querySelectorAll('#sub-tab-container .tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('sub-all').classList.add('active');
+
+        processShop();
+    }
+
+    function switchSubTab(sub) {
+        currentSubTab = sub;
+        document.querySelectorAll('#sub-tab-container .tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
         processShop();
     }
     
     function stopAllAudio() {
         const sounds = document.querySelectorAll('audio');
         sounds.forEach(s => { s.pause(); s.currentTime = 0; });
+    }
+
+    function toggleFavFilter() {
+        showFavoritesOnly = !showFavoritesOnly;
+        document.getElementById('favToggle').classList.toggle('active');
+        document.getElementById('mainBody').classList.toggle('fav-mode');
+        processShop();
+    }
+
+    function toggleFavorite(cmd) {
+        if (favorites.includes(cmd)) {
+            favorites = favorites.filter(f => f !== cmd);
+        } else {
+            favorites.push(cmd);
+        }
+        localStorage.setItem('cheddaFavs', JSON.stringify(favorites));
+        processShop();
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text);
+        alert("Command Copied: " + text);
     }
 
     function processShop() {
@@ -476,7 +547,16 @@
             if (showFavoritesOnly) {
                 return matchesSearch && favorites.includes(item.command);
             } else {
-                return matchesSearch && item.cat === currentTab;
+                // Main Category Filter
+                const matchesMain = (currentTab === 'all') ? true : (item.cat === currentTab);
+                
+                // Sub Category Filter (Only for Farts)
+                let matchesSub = true;
+                if (currentTab === 'farts' && currentSubTab !== 'all') {
+                    matchesSub = (item.sub === currentSubTab);
+                }
+
+                return matchesSearch && matchesMain && matchesSub;
             }
         });
 
@@ -496,54 +576,26 @@
         items.forEach(effect => {
             const isFav = favorites.includes(effect.command) ? "is-fav" : "";
             
-            // Audio preview builder logic
             let mediaHTML = "";
             if (effect.media_file) {
-                const folder = effect.cat === "farts" ? "farts" : "sounds";
+                const folder = (effect.cat === "farts") ? "farts" : "sounds";
                 mediaHTML = `<div class="preview-area"><audio controls src="${folder}/${effect.media_file}" preload="none"></audio></div>`;
             }
 
             container.innerHTML += `
                 <div class="item">
-                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
-                    <img src="images/${effect.img}" alt="${effect.name}">
+                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">⭐</button>
+                    <img src="images/${effect.img}" onerror="this.src='https://via.placeholder.com/150/000000/FFFFFF?text=No+Image'">
                     <h3>${effect.name}</h3>
-                    <div class="command-hint">${effect.command}</div>
-                    <p class="coin">${effect.price} Coins</p>
-                    <button class="copy-btn" onclick="copyCommand(this, '${effect.command}')">Copy Command</button>
+                    <div class="command-hint">${effect.price} CheddaCoins</div>
+                    <button class="copy-btn" onclick="copyToClipboard('${effect.command}')">Copy Command</button>
                     ${mediaHTML}
                 </div>
             `;
         });
     }
 
-    function toggleFavorite(cmd) {
-        if (favorites.includes(cmd)) {
-            favorites = favorites.filter(f => f !== cmd);
-        } else {
-            favorites.push(cmd);
-        }
-        localStorage.setItem('cheddaFavs', JSON.stringify(favorites));
-        processShop(); 
-    }
-
-    function toggleFavFilter() {
-        showFavoritesOnly = !showFavoritesOnly;
-        document.getElementById('favToggle').classList.toggle('active');
-        document.getElementById('mainBody').classList.toggle('fav-mode');
-        processShop();
-    }
-
-    function copyCommand(btn, cmd) {
-        navigator.clipboard.writeText(cmd);
-        btn.innerText = "COPIED!";
-        btn.style.backgroundColor = "#28a745";
-        setTimeout(() => { 
-            btn.innerText = "COPY COMMAND"; 
-            btn.style.backgroundColor = "#ed7612"; 
-        }, 1200);
-    }
-
+    // Run on startup
     processShop();
 </script>
 
