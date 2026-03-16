@@ -111,7 +111,7 @@
             position: relative;
         }
 
-        /* FIXED STAR STYLING */
+        /* NEW FIXED STAR LOGIC */
         .fav-btn {
             position: absolute;
             top: 15px;
@@ -119,16 +119,18 @@
             transform: translateX(-50%);
             background: none;
             border: none;
-            font-size: 26px;
+            font-size: 30px;
             cursor: pointer;
-            color: transparent;
-            -webkit-text-stroke: 1px #ffcf40; /* The Outline */
+            /* This makes the star look like an empty gray outline by default */
+            filter: grayscale(1) brightness(0.5);
+            opacity: 0.6;
             transition: 0.2s;
         }
 
         .fav-btn.is-fav {
-            color: #ffcf40; /* The Fill */
-            -webkit-text-stroke: 0px;
+            /* This brings back the full gold color */
+            filter: grayscale(0) brightness(1);
+            opacity: 1;
         }
 
         .item img {
@@ -507,7 +509,7 @@
         container.innerHTML = "";
         
         items.forEach(effect => {
-            const isFav = favorites.includes(effect.command) ? "is-fav" : "";
+            const isFavClass = favorites.includes(effect.command) ? "is-fav" : "";
             let mediaHTML = "";
             if (effect.media_file) {
                 const folder = (effect.cat === "farts") ? "farts" : "sounds";
@@ -516,7 +518,7 @@
 
             container.innerHTML += `
                 <div class="item">
-                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">⭐</button>
+                    <button class="fav-btn ${isFavClass}" onclick="toggleFavorite('${effect.command}')">⭐</button>
                     <img src="images/${effect.img}" loading="lazy" onerror="this.src='https://via.placeholder.com/150/000000/FFFFFF?text=No+Image'">
                     <h3>${effect.name}</h3>
                     <div style="color:#0bd2f4; font-size:14px; margin-bottom:10px;">${effect.price} CheddaCoins</div>
