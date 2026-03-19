@@ -188,7 +188,7 @@
     <button id="tab-webm" class="tab-btn" onclick="switchTab('webm')">Visual</button>
 </div>
 
-<div id="sub-tabs" style="display: none; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+<div id="sub-tabs" style="display: none; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
     <button id="sub-classic" class="tab-btn active" onclick="switchSubTab('classic')">CLASSIC</button>
     <button id="sub-swearing" class="tab-btn" onclick="switchSubTab('swearing')">SWEARING</button>
     <button id="sub-gremlin" class="tab-btn" onclick="switchSubTab('gremlin')">GREMLIN</button>
@@ -723,16 +723,15 @@
                 mediaHTML = `<audio controls src="${folder}/${effect.media_file}" preload="none"></audio>`;
             }
 
-            container.innerHTML += `
-                <div class="item">
-                    <button class="fav-btn ${isFav}" onclick="toggleFavorite('${effect.command}')">★</button>
-                    <img src="images/${effect.img}" loading="lazy" onerror="this.src='images/default.png'">
-                    <h3>${effect.name}</h3>
-                    <div style="color:#0bd2f4; margin-bottom:10px;">${effect.price} Coins</div>
-                    <button class="copy-btn" onclick="copyToClipboard(this, '${effect.command}')">COPY COMMAND</button>
-                    ${mediaHTML}
-                </div>
-            `;
+           container.innerHTML += '<div class="item">' +
+                '<button class="fav-btn ' + isFav + '" onclick="toggleFavorite(\'' + effect.command + '\')">★</button>' +
+                '<img src="images/' + effect.img + '" loading="lazy" onerror="this.src=\'images/default.png\'">' +
+                '<h3>' + effect.name + '</h3>' +
+                '<div style="color:rgba(255,255,255,0.5); font-size: 0.8em; margin-top: -5px; margin-bottom: 10px; font-weight: bold;">' + effect.command + '</div>' +
+                '<div style="color:#0bd2f4; margin-bottom:10px;">' + effect.price + ' Coins</div>' +
+                '<button class="copy-btn" onclick="copyToClipboard(this, \'' + effect.command + '\')">COPY COMMAND</button>' +
+                mediaHTML +
+            '</div>';
         });
     }
     processShop();
