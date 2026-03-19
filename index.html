@@ -163,7 +163,14 @@
         
         audio, video { width: 100%; border-radius: 5px; background: #000; margin-top: 10px; }
         video { height: 120px; }
-    </style>
+        
+    #sub-classic.active { border-color: #89ca12 !important; color: #89ca12 !important; }
+    #sub-sensual.active { border-color: #d1128c !important; color: #d1128c !important; }
+    #sub-swearing.active { border-color: #f30606 !important; color: #f30606 !important; }
+    #sub-straining.active { border-color: #8c4b12 !important; color: #8c4b12 !important; }
+    #sub-gremlin.active { border-color: #7b8c12 !important; color: #7b8c12 !important; }
+    #sub-quotes.active { border-color: #eee012 !important; color: #eee012 !important; }
+</style>
 </head>
 <body>
 
@@ -658,11 +665,13 @@
     }
 
     function switchSubTab(sub) {
-        currentSubTab = sub;
-        document.querySelectorAll('#sub-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`sub-${sub}`).classList.add('active');
-        processShop();
-    }
+    currentSubTab = sub;
+    // This line removes the old color from all buttons
+    document.querySelectorAll('#sub-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+    // This line adds the new color based on the ID
+    document.getElementById('sub-' + sub).classList.add('active');
+    processShop();
+}
 
     function toggleFavFilter() {
         showFavoritesOnly = !showFavoritesOnly;
