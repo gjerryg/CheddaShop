@@ -6,6 +6,22 @@
     <title>CheddaCoin Shop</title>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
     <style>
+
+	.command-box {
+            margin-bottom: 12px; /* Adds a little breathing room above the price */
+         }
+
+        .command-box span {
+            border: 1px solid #089ab3; /* That specific blue */
+            color: #ed7612;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+    	    background: rgba(11, 210, 244, 0.05); /* Very subtle fill */
+	}	
+
         header {
             position: sticky;
             top: 0;
@@ -739,7 +755,7 @@
                 '<button class="fav-btn ' + isFav + '" onclick="toggleFavorite(\'' + effect.command + '\')">★</button>' +
                 '<img src="images/' + effect.img + '" loading="lazy" onerror="this.src=\'images/default.png\'">' +
                 '<h3>' + effect.name + '</h3>' +
-                '<div style="color:rgba(255,255,255,0.5); font-size: 0.8em; margin-top: -5px; margin-bottom: 10px; font-weight: bold;">' + effect.command + '</div>' +
+                '<div class="command-box"><span>' + effect.command + '</span></div>' +
                 '<div style="color:#0bd2f4; margin-bottom:10px;">' + effect.price + ' Coins</div>' +
                 '<button class="copy-btn" onclick="copyToClipboard(this, \'' + effect.command + '\')">COPY COMMAND</button>' +
                 mediaHTML +
